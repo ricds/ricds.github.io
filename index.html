@@ -16,7 +16,6 @@
 
     #container {
       display: flex;
-      flex-direction: row;
       flex-wrap: wrap;
     }
 
@@ -26,9 +25,9 @@
     }
 
     #download-links {
+      width: 70%;
       padding: 10px;
       background: #f9f9f9;
-      flex-grow: 1;
     }
 
     ul {
@@ -42,10 +41,7 @@
         flex-direction: column;
       }
 
-      #map {
-        width: 100%;
-      }
-
+      #map,
       #download-links {
         width: 100%;
       }
@@ -90,7 +86,7 @@
     ];
   }
 
-  // Restrict to South America: lat -60 to 15, lng -90 to -30
+  // South America: lat -60 to 15, lng -90 to -30
   for (let lat = -60; lat < 15; lat += 10) {
     for (let lng = -90; lng < -30; lng += 10) {
       const bounds = [[lat, lng], [lat + 10, lng + 10]];
@@ -103,7 +99,6 @@
 
       rect.bindTooltip(tileName, { permanent: false });
 
-      // Highlight on hover
       rect.on('mouseover', () => {
         rect.setStyle({ color: 'red', fillOpacity: 0.3 });
       });
@@ -112,7 +107,6 @@
         rect.setStyle({ color: 'green', fillOpacity: 0.15 });
       });
 
-      // Show download links on click
       rect.on('click', () => {
         const urls = getDownloadUrlsForTile(lat, lng);
         urlList.innerHTML = '';
