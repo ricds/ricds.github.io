@@ -14,8 +14,8 @@
 
     @media (min-width: 769px) {
       #container { flex-direction: row; }
-      #map { width: 40%; height: 60vh; }
-      #download-links { width: 70%; }
+      #map { width: 50%; height: 60vh; }
+      #download-links { width: 50%; }
     }
   </style>
 </head>
@@ -128,9 +128,9 @@
     .then(data => {
       const geojsonLayer = L.geoJSON(data, {
         style: {
-          color: 'green',
+          color: 'gray',
           weight: 1,
-          fillOpacity: 0.15
+          fillOpacity: 0.1
         },
         onEachFeature: (feature, layer) => {
           const name = feature.properties.name || 'No name';
@@ -143,7 +143,7 @@
           });
 
           layer.on('mouseout', () => {
-            layer.setStyle({ color: 'green', fillOpacity: 0.15 });
+            layer.setStyle({ color: 'gray', fillOpacity: 0.1 });
           });
 
           layer.on('click', () => {
