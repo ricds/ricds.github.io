@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>South America Tiles from GeoJSON</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: sans-serif; }
+    #container { display: flex; flex-direction: column; }
+    #map { width: 100%; height: 60vh; }
+    #download-links { width: 100%; padding: 10px; background: #f9f9f9; }
+    ul { list-style: none; padding: 0; }
+
+    @media (min-width: 769px) {
+      #container { flex-direction: row; }
+      #map { width: 40%; height: 60vh; }
+      #download-links { width: 70%; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <div id="map"></div>
+  <div id="download-links">
+    <img src="ctrees.png" alt="ctrees" style="max-width: 10%; height: auto; margin-bottom: 10px;" />
+    <h2>Canopy Tree Height maps for the Amazon Forest (mean height composite 2020-2024) by CTrees.org</h2>
+
+    <h2>Download URL for Selected Tile:</h2>
+    <ul id="url-list">
+      
+      <li><p style="color: red;">Click a tile to see the download link.</p></li>
+    </ul>
+
+    <BR>
+
+    <h3>Description</h3>
+    Mean canopy Tree Height for the Amazon Forest on the period 2020-2024 at 4.78 m of spatial resolution. Created using a deep learning model on high-resolution Planet imagery from the Norway's International Climate and Forest Initiative (NICFI) Satellite Data Program.
+    <BR><BR>
+    Data is scaled to a factor of 2.5, therefore to get height (meters) divide the value by 2.5.
+
+    <h3>License</h3>
+    https://creativecommons.org/licenses/by/4.0/
+
+    <h3>Contact</h3>
+    info@ctrees.org
+
+    <h3>How to Cite</h3>
+    1) Fabien H Wagner, Ricardo Dalagnol, Griffin Carter, Mayumi CM Hirye, Shivraj Gill, Le Bienfaiteur Sagang Takougoum, Samuel Favrichon, Michael Keller, Jean PHB Ometto, Lorena Alves, Cynthia Creze, Stephanie P George-Chacon, Shuang Li, Zhihua Liu, Adugna Mullissa, Yan Yang, Erone G Santos, Sarah R Worden, Martin Brandt, Philippe Ciais, Stephen C Hagen, Sassan Saatchi. (2005). High Resolution Tree Height Mapping of the Amazon Forest using Planet NICFI Images and LiDAR-Informed U-Net Model. arXiv. eprint 2501.10600. URL <a href="https://arxiv.org/abs/2501.10600">https://arxiv.org/abs/2501.10600</a>
+    <BR><BR>
+    2) CTrees. (2025). Canopy Tree Height maps for the Amazon Forest (mean height composite 2020-2024) by CTrees.org was accessed on DATE from https://registry.opendata.aws/ctrees-amazon-canopy-height. Accessed DAY MONTH YEAR.
+
+    <BR><BR>
+    Data hosted at: <a href="https://registry.opendata.aws/ctrees-amazon-canopy-height/" target="_blank" rel="noopener noreferrer">https://registry.opendata.aws/ctrees-amazon-canopy-height/</a>
+
+    
+  </div>
+</div>
+
+<!--
+<div id="container">
+  <div id="map"></div>
+  <div id="download-links">
+    <h3>Download URL for Selected Tile:</h3>
+    <ul id="url-list">
+      <li>Click a tile to see the download link.</li>
+    </ul>
+  </div>
+</div>
+-->
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  //const map = L.map('map').setView([-15, -60], 4);
+  // 1. Use canvas rendering
+  const map = L.map('map', { preferCanvas: true }).setView([-15, -60], 4);
+
+  // Base layers
+  const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  });
+
+  const satelliteLayer = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    {
+      maxZoom: 19,
+      attribution: 'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics'
+    }
+  );
+
+  // New hybrid layer
+  const esriSatellite = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    { maxZoom: 19,
+      attribution: 'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics'
+     }
+  );
+  const esriLabels = L.tileLayer(
+    'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+    { maxZoom: 19 }
+  );
+  const esriHybrid = L.layerGroup([esriSatellite, esriLabels]);
+
+  // Add default layer
+  //osmLayer.addTo(map);
+  esriHybrid.addTo(map);
+
+  // Base layer control
+  const baseLayers = {
+    "OpenStreetMap": osmLayer,
+    "Satellite Only": satelliteLayer,
+    "Satellite with Labels": esriHybrid
+  };
+  L.control.layers(baseLayers).addTo(map);
+
+  const urlList = document.getElementById('url-list');
+
+  // Load GeoJSON file (must be served from a local server)
+  fetch('height_tiles.geojson')
+    .then(res => {
+      if (!res.ok) throw new Error('GeoJSON not found or inaccessible');
+      return res.json();
+    })
+    .then(data => {
+      const geojsonLayer = L.geoJSON(data, {
+        style: {
+          color: 'green',
+          weight: 1,
+          fillOpacity: 0.15
+        },
+        onEachFeature: (feature, layer) => {
+          const name = feature.properties.name || 'No name';
+          const url = feature.properties.url || '#';
+
+          layer.bindTooltip(name, { permanent: false });
+
+          layer.on('mouseover', () => {
+            layer.setStyle({ color: 'red', fillOpacity: 0.3 });
+          });
+
+          layer.on('mouseout', () => {
+            layer.setStyle({ color: 'green', fillOpacity: 0.15 });
+          });
+
+          layer.on('click', () => {
+            urlList.innerHTML = '';
+            const li = document.createElement('li');
+            //li.innerHTML = `<a href="${name}" target="_blank">${name}</a>`;
+            li.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
+            urlList.appendChild(li);
+          });
+        }
+      });
+
+      geojsonLayer.addTo(map);
+      map.fitBounds(geojsonLayer.getBounds());
+    })
+    .catch(error => {
+      console.error('Error loading GeoJSON:', error);
+      urlList.innerHTML = '<li>Error loading GeoJSON file.</li>';
+    });
+</script>
+
+</body>
+</html>
