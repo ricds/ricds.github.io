@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>South America Tiles from GeoJSON</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
@@ -29,15 +29,14 @@
 
     <h2>Download URL for Selected Tile:</h2>
     <ul id="url-list">
-      
       <li><p style="color: red;">Click a tile to see the download link.</p></li>
     </ul>
 
-    <BR>
+    <br />
 
     <h3>Description</h3>
     Mean canopy Tree Height for the Amazon Forest on the period 2020-2024 at 4.78 m of spatial resolution. Created using a deep learning model on high-resolution Planet imagery from the Norway's International Climate and Forest Initiative (NICFI) Satellite Data Program.
-    <BR><BR>
+    <br /><br />
     Note: The height values in the raster are scaled by a factor of 2.5. You need to divide the values by 2.5 to get the height in meters.
 
     <h3>License</h3>
@@ -48,34 +47,19 @@
 
     <h3>How to Cite</h3>
     1) Fabien H Wagner, Ricardo Dalagnol, Griffin Carter, Mayumi CM Hirye, Shivraj Gill, Le Bienfaiteur Sagang Takougoum, Samuel Favrichon, Michael Keller, Jean PHB Ometto, Lorena Alves, Cynthia Creze, Stephanie P George-Chacon, Shuang Li, Zhihua Liu, Adugna Mullissa, Yan Yang, Erone G Santos, Sarah R Worden, Martin Brandt, Philippe Ciais, Stephen C Hagen, Sassan Saatchi. (2005). High Resolution Tree Height Mapping of the Amazon Forest using Planet NICFI Images and LiDAR-Informed U-Net Model. arXiv. eprint 2501.10600. URL <a href="https://arxiv.org/abs/2501.10600">https://arxiv.org/abs/2501.10600</a>
-    <BR><BR>
+    <br /><br />
     2) CTrees. (2025). Canopy Tree Height maps for the Amazon Forest (mean height composite 2020-2024) by CTrees.org was accessed on DATE from https://registry.opendata.aws/ctrees-amazon-canopy-height. Accessed DAY MONTH YEAR.
 
-    <BR><BR>
+    <br /><br />
     Data hosted at: <a href="https://registry.opendata.aws/ctrees-amazon-canopy-height/" target="_blank" rel="noopener noreferrer">https://registry.opendata.aws/ctrees-amazon-canopy-height/</a>
 
-    
   </div>
 </div>
-
-<!--
-<div id="container">
-  <div id="map"></div>
-  <div id="download-links">
-    <h3>Download URL for Selected Tile:</h3>
-    <ul id="url-list">
-      <li>Click a tile to see the download link.</li>
-    </ul>
-  </div>
-</div>
--->
 
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-  //const map = L.map('map').setView([-15, -60], 4);
-  // 1. Use canvas rendering
   const map = L.map('map', { preferCanvas: true }).setView([-15, -60], 4);
 
   // Base layers
@@ -106,7 +90,6 @@
   const esriHybrid = L.layerGroup([esriSatellite, esriLabels]);
 
   // Add default layer
-  //osmLayer.addTo(map);
   esriHybrid.addTo(map);
 
   // Base layer control
@@ -118,6 +101,29 @@
   L.control.layers(baseLayers).addTo(map);
 
   const urlList = document.getElementById('url-list');
+  const selectedTiles = new Set();
+
+  // Function to update the URL list in the sidebar based on selected tiles
+  function updateUrlList() {
+    urlList.innerHTML = '';
+    if (selectedTiles.size === 0) {
+      const li = document.createElement('li');
+      li.innerHTML = '<p style="color: red;">Click a tile to see the download link.</p>';
+      urlList.appendChild(li);
+      return;
+    }
+    selectedTiles.forEach(layer => {
+      const url = layer.feature.properties.url || '#';
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+      urlList.appendChild(li);
+    });
+  }
+
+  // Variables to handle shift + drag selection
+  let isShiftDragging = false;
+  let dragStartPoint = null;
+  let dragRectangle = null;
 
   // Load GeoJSON file (must be served from a local server)
   fetch('height_tiles.geojson')
@@ -134,30 +140,109 @@
         },
         onEachFeature: (feature, layer) => {
           const name = feature.properties.name || 'No name';
-          const url = feature.properties.url || '#';
 
           layer.bindTooltip(name, { permanent: false });
 
           layer.on('mouseover', () => {
-            layer.setStyle({ color: 'red', fillOpacity: 0.3 });
+            if (!selectedTiles.has(layer)) {
+              layer.setStyle({ color: 'red', fillOpacity: 0.3 });
+            }
           });
 
           layer.on('mouseout', () => {
-            layer.setStyle({ color: 'gray', fillOpacity: 0.1 });
+            if (!selectedTiles.has(layer)) {
+              layer.setStyle({ color: 'gray', fillOpacity: 0.1 });
+            }
           });
 
-          layer.on('click', () => {
-            urlList.innerHTML = '';
-            const li = document.createElement('li');
-            //li.innerHTML = `<a href="${name}" target="_blank">${name}</a>`;
-            li.innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
-            urlList.appendChild(li);
+          layer.on('click', (e) => {
+            if (!e.originalEvent.shiftKey) {
+              if (selectedTiles.has(layer)) {
+                // Unselect if already selected
+                selectedTiles.delete(layer);
+                layer.setStyle({ color: 'gray', fillOpacity: 0.1 });
+              } else {
+                // Clear others and select this one
+                selectedTiles.forEach(l => l.setStyle({ color: 'gray', fillOpacity: 0.1 }));
+                selectedTiles.clear();
+
+                selectedTiles.add(layer);
+                layer.setStyle({ color: 'blue', fillOpacity: 0.5 });
+              }
+              updateUrlList();
+            }
+            // Shift+click drag handled separately below
           });
         }
       });
 
       geojsonLayer.addTo(map);
       map.fitBounds(geojsonLayer.getBounds());
+
+      // Setup shift + drag selection handlers on the map container
+      const container = map.getContainer();
+
+      container.addEventListener('mousedown', (e) => {
+        if (!e.shiftKey) return;  // only on shift
+
+        isShiftDragging = true;
+        dragStartPoint = map.mouseEventToContainerPoint(e);
+
+        if (dragRectangle) {
+          map.removeLayer(dragRectangle);
+          dragRectangle = null;
+        }
+
+        e.preventDefault();
+      });
+
+      container.addEventListener('mousemove', (e) => {
+        if (!isShiftDragging) return;
+
+        const dragEndPoint = map.mouseEventToContainerPoint(e);
+
+        const bounds = L.bounds(dragStartPoint, dragEndPoint);
+        const rectBounds = L.latLngBounds(
+          map.containerPointToLatLng(bounds.min),
+          map.containerPointToLatLng(bounds.max)
+        );
+
+        if (!dragRectangle) {
+          dragRectangle = L.rectangle(rectBounds, {
+            color: 'blue',
+            weight: 1,
+            fillOpacity: 0.2
+          }).addTo(map);
+        } else {
+          dragRectangle.setBounds(rectBounds);
+        }
+      });
+
+      container.addEventListener('mouseup', (e) => {
+        if (!isShiftDragging) return;
+
+        isShiftDragging = false;
+
+        if (dragRectangle) {
+          // Select all tiles intersecting drag rectangle
+          const selectionBounds = dragRectangle.getBounds();
+
+          geojsonLayer.eachLayer(layer => {
+            if (selectionBounds.intersects(layer.getBounds())) {
+              if (!selectedTiles.has(layer)) {
+                selectedTiles.add(layer);
+                layer.setStyle({ color: 'blue', fillOpacity: 0.5 });
+              }
+            }
+          });
+
+          updateUrlList();
+
+          map.removeLayer(dragRectangle);
+          dragRectangle = null;
+        }
+      });
+
     })
     .catch(error => {
       console.error('Error loading GeoJSON:', error);
