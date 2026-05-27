@@ -24,7 +24,7 @@
 <div id="container">
   <div id="map"></div>
   <div id="download-links">
-    <img src="ctrees.png" alt="ctrees" style="max-width: 10%; height: auto; margin-bottom: 10px;" />
+    <img src="assets/images/ctrees.png" alt="ctrees" style="max-width: 10%; height: auto; margin-bottom: 10px;" />
     <h2>Canopy Tree Height Maps for the Amazon Forest (mean height composite 2020-2024) by CTrees.org</h2>
 
     <h2>Download URL for Selected Tile:</h2>
@@ -120,7 +120,7 @@
   const urlList = document.getElementById('url-list');
 
   // Load GeoJSON file (must be served from a local server)
-  fetch('height_tiles.geojson')
+  fetch('assets/data/height_tiles.geojson')
     .then(res => {
       if (!res.ok) throw new Error('GeoJSON not found or inaccessible');
       return res.json();

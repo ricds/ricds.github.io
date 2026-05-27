@@ -7,7 +7,7 @@ const defaultTitle = document.title;
 const panelTitles = {
   home: defaultTitle,
   about: `About | ${defaultTitle}`,
-  research: `Research & Publications | ${defaultTitle}`,
+  research: `Research & Development | ${defaultTitle}`,
   teaching: `Teaching | ${defaultTitle}`,
   media: `Media & Outreach | ${defaultTitle}`,
   resources: `Resources | ${defaultTitle}`,

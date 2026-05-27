@@ -5,6 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ricardo Dalagnol — Remote Sensing & Forest Science</title>
   <meta name="description" content="Researcher in remote sensing and forest science. Projects, publications, teaching, and outreach." />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Ricardo Dalagnol",
+    "honorificSuffix": "PhD",
+    "url": "https://ricds.github.io/",
+    "jobTitle": "Remote Sensing Scientist",
+    "description": "Researcher working at the intersection of remote sensing, forest science, geospatial artificial intelligence, tropical forest dynamics, REDD+, and digital MRV.",
+    "sameAs": [
+      "https://scholar.google.com.br/citations?hl=pt-BR&user=4ecvtoEAAAAJ",
+      "https://www.linkedin.com/in/ricardo-dalagnol-da-silva-68b94a106/",
+      "https://github.com/ricds"
+    ],
+    "knowsAbout": [
+      "Remote sensing",
+      "Forest science",
+      "Tropical forest degradation",
+      "Deforestation",
+      "LiDAR",
+      "Geospatial artificial intelligence",
+      "REDD+",
+      "Digital MRV"
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -20,7 +46,7 @@
     <nav class="site-nav">
       <a href="#home" data-panel="home" class="active">Home</a>
       <a href="#about" data-panel="about">About</a>
-      <a href="#research" data-panel="research">Research & Publications</a>
+      <a href="#research" data-panel="research">Research & Development</a>
       <a href="#teaching" data-panel="teaching">Teaching</a>
       <a href="#media" data-panel="media">Media</a>
       <span class="nav-dropdown">
@@ -40,10 +66,15 @@
     <div class="panel-stage">
       <section id="home" class="section panel active home-panel" data-panel="home">
         <div class="hero">
+          <div class="hero-photo">
+            <img src="assets/images/jaru_2015_LSB_6764-227.jpg" alt="Ricardo Dalagnol during fieldwork in Jaru, Brazil" />
+            <p class="image-caption">Rebio Jaru, Rondônia, 2015</p>
+          </div>
           <div class="hero-text">
             <p class="eyebrow">Remote Sensing · Forest Science · Climate</p>
             <h1>Turning satellite data into <span>Forest Intelligence</span>.</h1>
-            <p class="lead">I work at the intersection of Forest and Earth Observation with a focus on Geospatial Artificial Intelligence (Geo AI), building data and models that reveal natural and anthropogenic changes, such as deforestation and degradation, and how forests recover from disturbance.</p>
+            <p class="lead">I am a Brazilian remote sensing scientist working at the intersection of Forest and Earth Observation with a focus on Geospatial Artificial Intelligence (Geo AI), building data and models that reveal natural and anthropogenic changes, such as deforestation and degradation, and how forests recover from disturbance.</p>
+            <p class="pt-note">Também atuo em português com equipes no Brasil e em outros países tropicais.</p>
             <div class="hero-actions">
               <a class="btn primary" href="#contact" data-panel="contact">Start a collaboration</a>
               <a class="btn ghost" href="#research" data-panel="research">Explore my work</a>
@@ -59,22 +90,33 @@
               </div>
             </div>
           </div>
-          <div class="hero-highlights">
-            <div class="card reveal paper-card highlight-card">
-              <p class="highlight-label">Recent highlight</p>
-              <img src="assets/images/forest-degradation-nicfi.png" alt="Mapping tropical forest degradation with deep learning and Planet NICFI data" />
-              <h3>Mapping tropical forest degradation with deep learning and Planet NICFI data</h3>
-              <p>First wall‑to‑wall, high‑resolution mapping of tropical forest degradation using NICFI imagery and deep learning—turning subtle canopy damage into measurable, actionable signals.</p>
-              <a class="btn ghost" href="https://doi.org/10.1016/j.rse.2023.113798" target="_blank" rel="noopener">Read the paper</a>
-            </div>
-          </div>
         </div>
 
         <div class="home-content">
+          <div class="card reveal feature-callout">
+            <div>
+              <p class="highlight-label">Platform release</p>
+              <h2>REDD+AI at CTrees</h2>
+              <p>In 2024, CTrees released REDD+AI, an open platform for mapping tropical forest degradation and attributing it to logging, fire, and roads across tropical countries and subnational jurisdictions.</p>
+            </div>
+            <div class="reddai-options" aria-label="REDD+AI visual">
+              <a class="reddai-visual reddai-photo" href="https://ctrees.org/reddai" target="_blank" rel="noopener">
+                <img src="assets/images/redd_ai_logging.png" alt="REDD+AI logging interface" />
+              </a>
+            </div>
+            <a class="btn primary" href="https://ctrees.org/reddai" target="_blank" rel="noopener">Explore REDD+AI</a>
+          </div>
           <div class="section-header">
-            <h2>Past highlights</h2>
+            <h2>Research highlights</h2>
           </div>
           <div class="grid past-highlights">
+            <article class="card reveal paper-card">
+              <p class="highlight-label">Recent highlight</p>
+              <img src="assets/images/forest-degradation-nicfi.png" alt="Mapping tropical forest degradation with deep learning and Planet NICFI data" />
+              <h3>Mapping tropical forest degradation with deep learning and Planet NICFI data</h3>
+              <p>First wall-to-wall, high-resolution mapping of tropical forest degradation using NICFI imagery and deep learning, turning subtle canopy damage into measurable, actionable signals.</p>
+              <a class="btn ghost" href="https://doi.org/10.1016/j.rse.2023.113798" target="_blank" rel="noopener">Read the paper</a>
+            </article>
             <article class="card reveal paper-card">
               <img src="assets/images/palm-cover-lidar.gif" alt="Canopy palm cover across the Brazilian Amazon forests mapped with airborne LiDAR data and deep learning" />
               <h3>Canopy palm cover across the Brazilian Amazon forests mapped with airborne LiDAR data and deep learning</h3>
@@ -83,7 +125,7 @@
             </article>
           </div>
           <div class="card reveal home-note">
-            <p>This website shows a bit of my profile, research projects, publications, and teaching. Don’t hesitate to contact me through my email or Twitter (@RicardoDalagnol).</p>
+            <p>This website shows a bit of my profile, research projects, publications, and teaching. Please contact me by email through the <a href="#contact" data-panel="contact">Contact page</a>.</p>
           </div>
         </div>
       </section>
@@ -93,7 +135,7 @@
           <h2>About</h2>
           <p>I am passionate about studying forests through the lenses of remote sensing (RS) and uncovering what we can see from above the forest canopy.</p>
         </div>
-        <div class="two-col">
+        <div class="about-grid">
           <div class="card reveal about-photo">
             <img src="assets/images/ricardo-joshua-trees.jpg" alt="Joshua Tree National Park in the Mojave Desert" />
             <p class="muted">This picture is not a tropical forest (off course), but this is nearby where I am living right now in Pasadena, CA, at Joshua Tree National Park in the Mojave Desert. Very hot but astonishing place! Almost outworldly</p>
@@ -104,22 +146,26 @@
             <p>My research focuses on forest dynamics, biogeosciences, and the carbon cycle. I investigate how environmental and climate change influence tropical forest ecosystems, and I develop quantitative methods that combine remote sensing and field data to improve the monitoring of forest structure, degradation, and carbon stocks.</p>
             <p>I have strong analytical and programming expertise, with an emphasis on rigorous, empirical, and reproducible research. My work bridges ecological theory, geospatial data science, and computational modeling to generate actionable information for climate mitigation and forest conservation.</p>
             <p>I am currently a Research Scientist at CTrees (California), where I develop and apply advanced remote sensing and machine learning methods to support high-integrity forest carbon accounting and large-scale monitoring initiatives.</p>
+            <p>I completed my postdoctoral appointment at UCLA in 2024 and then joined CTrees as Research Scientist and Activity Data Science Lead.</p>
             <p>I welcome opportunities for scientific collaboration and interdisciplinary research. Please feel free to get in touch via email.</p>
           </div>
-        </div>
-        <div class="two-col">
           <div class="card reveal">
-            <h3>Employment / Education</h3>
+            <h3>Work</h3>
             <ul class="timeline">
-              <li><strong>2024–</strong> Research Scientist, CTrees (California, USA)</li>
+              <li><strong>2024–</strong> Research Scientist and Activity Data Science Lead, CTrees (California, USA)</li>
               <li><strong>2022–2024</strong> Post-doctoral Researcher, Institute of the Environment and Sustainability, UCLA (Los Angeles, USA)</li>
               <li><strong>2022–2024</strong> Research Affiliate, NASA-Jet Propulsion Laboratory, California Institute of Technology (Pasadena, USA)</li>
               <li><strong>2021–2024</strong> Honorary Research Fellow, University of Manchester (Manchester, UK)</li>
               <li><strong>2020–2022</strong> Post-doctoral Researcher, DIOTG/INPE (São José dos Campos, Brazil)</li>
-              <li><strong>2016–2020</strong> Postgraduate Researcher (PhD Remote Sensing), DIOTG/INPE (São José dos Campos, Brazil)</li>
               <li><strong>2018–2019</strong> Visiting Researcher (PhD Remote Sensing), University of Leeds (Leeds, UK)</li>
               <li><strong>2014–2016</strong> Research Assistant, DIAV/INPE (São José dos Campos, Brazil)</li>
-              <li><strong>2012–2014</strong> Postgraduate Researcher (MSc Remote Sensing), DIOTG/INPE (São José dos Campos, Brazil)</li>
+            </ul>
+          </div>
+          <div class="card reveal">
+            <h3>Education</h3>
+            <ul class="timeline">
+              <li><strong>2016–2020</strong> PhD in Remote Sensing, DIOTG/INPE (São José dos Campos, Brazil)</li>
+              <li><strong>2012–2014</strong> MSc in Remote Sensing, DIOTG/INPE (São José dos Campos, Brazil)</li>
               <li><strong>2008–2011</strong> BSc. in Forest Engineering (interrupted to start the MSc), UTFPR (Dois Vizinhos, Brazil)</li>
               <li><strong>2007–2011</strong> BSc. in Environmental Engineering, UNISEP (Dois Vizinhos, Brazil)</li>
             </ul>
@@ -138,20 +184,20 @@
               <li>REDD+</li>
             </ul>
           </div>
-        </div>
-        <div class="card reveal links-card">
-          <h3>Links</h3>
-          <div class="link-row">
-            <a href="http://lattes.cnpq.br/6150479997891841" target="_blank" rel="noopener">CV – Brazilian Curriculum Lattes (pt-br)</a>
-            <a href="https://scholar.google.com.br/citations?hl=pt-BR&user=4ecvtoEAAAAJ" target="_blank" rel="noopener">Google Scholar Publications</a>
-            <a href="https://publons.com/researcher/2459210/ricardo-dalagnol/peer-review/" target="_blank" rel="noopener">Reviewer profile</a>
+          <div class="card reveal links-card">
+            <h3>Links</h3>
+            <div class="link-row">
+              <a href="http://lattes.cnpq.br/6150479997891841" target="_blank" rel="noopener">CV – Brazilian Curriculum Lattes (pt-br)</a>
+              <a href="https://scholar.google.com.br/citations?hl=pt-BR&user=4ecvtoEAAAAJ" target="_blank" rel="noopener">Google Scholar Publications</a>
+              <a href="https://publons.com/researcher/2459210/ricardo-dalagnol/peer-review/" target="_blank" rel="noopener">Reviewer profile</a>
+            </div>
           </div>
         </div>
       </section>
 
       <section id="research" class="section panel" data-panel="research">
         <div class="section-header">
-          <h2>Research & Publications</h2>
+          <h2>Research & Development</h2>
         </div>
         <div class="grid research-lines">
           <article class="card reveal">
@@ -166,6 +212,25 @@
         </div>
         <div class="card reveal">
           <p>Online record at Google Scholar: <a href="https://scholar.google.com.br/citations?hl=pt-BR&user=4ecvtoEAAAAJ" target="_blank" rel="noopener">https://scholar.google.com.br/citations?hl=pt-BR&user=4ecvtoEAAAAJ</a></p>
+        </div>
+        <div class="card reveal development-card">
+          <h3>Applied REDD+ and dMRV development</h3>
+          <p>Beyond peer-reviewed publications, I lead applied technical work that turns remote sensing, AI, and forest carbon methods into operational datasets for jurisdictional REDD+ and dMRV programs.</p>
+          <h4>Technical reports</h4>
+          <ul class="list">
+            <li>
+              <span class="list-title">Dalagnol, Ricardo, et al. (2024). Forest Cover Benchmark Maps and Activity Data to Support VM0048 Implementation across 6 Tropical Jurisdictions in 3 Countries.</span>
+              <span class="list-subtitle">Report prepared for Verra VCS.</span>
+            </li>
+            <li>
+              <span class="list-title">Dalagnol, Ricardo, et al. (2025). Forest Cover Benchmark Maps and Activity Data to Support VM0048 Implementation across 36 Tropical Jurisdictions in 16 Countries.</span>
+              <span class="list-subtitle">Report prepared for Verra VCS.</span>
+            </li>
+            <li>
+              <span class="list-title">Dalagnol, Ricardo, et al. (2024-2026). Due-diligence dMRV assessments for 10 ART-TREES and FCPF jurisdictional REDD+ opportunities.</span>
+              <span class="list-subtitle">Technical development integrating activity data, remote sensing diagnostics, and geospatial quality checks for buyer-side evaluation of jurisdictional forest carbon performance.</span>
+            </li>
+          </ul>
         </div>
         <div class="card reveal pubs-card">
           <h3>Full list of publications</h3>
@@ -523,54 +588,156 @@
           <p>Articles, interviews, short courses, and public-facing work.</p>
         </div>
         <div class="card reveal">
-          <ul class="list">
-            <li>
-              <span class="list-title">Nov 2021 · Short course “Deep Learning for Remote Sensing images with R language”</span>
-              <span class="list-subtitle">IEEE GRSS-ISPRS SC 2021 – <a href="https://youtu.be/N3CHgRlRqOA" target="_blank" rel="noopener">https://youtu.be/N3CHgRlRqOA</a></span>
+          <ul class="list media-list">
+            <li class="media-item">
+              <a class="media-thumb" href="https://youtu.be/N3CHgRlRqOA" target="_blank" rel="noopener" aria-label="Watch Deep Learning for Remote Sensing images with R language">
+                <img src="assets/images/video-deep-learning-rs.jpg" alt="" loading="lazy" />
+                <span>Watch</span>
+              </a>
+              <div>
+                <span class="list-title">Nov 2021 · Short course “Deep Learning for Remote Sensing images with R language”</span>
+                <span class="list-subtitle">IEEE GRSS-ISPRS SC 2021 – <a href="https://youtu.be/N3CHgRlRqOA" target="_blank" rel="noopener">https://youtu.be/N3CHgRlRqOA</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Oct 2021 · Short course “Introduction to Google Earth Engine with R language”</span>
-              <span class="list-subtitle">IEEE GRSS-ISPRS SC 2021 – <a href="https://youtu.be/SHXuIpjU3YE" target="_blank" rel="noopener">https://youtu.be/SHXuIpjU3YE</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://youtu.be/SHXuIpjU3YE" target="_blank" rel="noopener" aria-label="Watch Introduction to Google Earth Engine with R language">
+                <img src="assets/images/video-google-earth-engine-r.jpg" alt="" loading="lazy" />
+                <span>Watch</span>
+              </a>
+              <div>
+                <span class="list-title">Oct 2021 · Short course “Introduction to Google Earth Engine with R language”</span>
+                <span class="list-subtitle">IEEE GRSS-ISPRS SC 2021 – <a href="https://youtu.be/SHXuIpjU3YE" target="_blank" rel="noopener">https://youtu.be/SHXuIpjU3YE</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Sep 2021 · Mini-curso “Deep Learning para Imagens de Sensoriamento Remoto”</span>
-              <span class="list-subtitle">WorCAP 2021 – <a href="https://youtu.be/foRhRg6VaCQ" target="_blank" rel="noopener">https://youtu.be/foRhRg6VaCQ</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://youtu.be/foRhRg6VaCQ" target="_blank" rel="noopener" aria-label="Watch Deep Learning para Imagens de Sensoriamento Remoto">
+                <img src="assets/images/video-deep-learning-pt.jpg" alt="" loading="lazy" />
+                <span>Watch</span>
+              </a>
+              <div>
+                <span class="list-title">Sep 2021 · Mini-curso “Deep Learning para Imagens de Sensoriamento Remoto”</span>
+                <span class="list-subtitle">WorCAP 2021 – <a href="https://youtu.be/foRhRg6VaCQ" target="_blank" rel="noopener">https://youtu.be/foRhRg6VaCQ</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Aug 2021 · TV Globo Minas Gerais</span>
-              <span class="list-subtitle">Mudanças climáticas aumentam chuva em Minas – <a href="https://g1.globo.com" target="_blank" rel="noopener">https://g1.globo.com</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://g1.globo.com/mg/minas-gerais/noticia/2021/08/21/mudancas-climaticas-aumentam-chuva-em-minas-aponta-estudo.ghtml" target="_blank" rel="noopener" aria-label="Open TV Globo Minas Gerais article">
+                <img src="assets/images/media-tv-globo.jpg" alt="" loading="lazy" />
+                <span>Read</span>
+              </a>
+              <div>
+                <span class="list-title">Aug 2021 · TV Globo Minas Gerais</span>
+                <span class="list-subtitle">Mudanças climáticas aumentam chuva em Minas – <a href="https://g1.globo.com/mg/minas-gerais/noticia/2021/08/21/mudancas-climaticas-aumentam-chuva-em-minas-aponta-estudo.ghtml" target="_blank" rel="noopener">g1.globo.com</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Aug 2021 · Outreach video</span>
-              <span class="list-subtitle">Extreme rainfall and climate change in Brazilian Minas Gerais in January 2020 – <a href="https://youtu.be" target="_blank" rel="noopener">https://youtu.be</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://youtu.be/B-gKw-0qb4w" target="_blank" rel="noopener" aria-label="Watch Extreme rainfall and climate change in Brazilian Minas Gerais in January 2020">
+                <img src="assets/images/media-extreme-rain-en.jpg" alt="" loading="lazy" />
+                <span>Watch</span>
+              </a>
+              <div>
+                <span class="list-title">Aug 2021 · Outreach video</span>
+                <span class="list-subtitle">Extreme rainfall and climate change in Brazilian Minas Gerais in January 2020 – <a href="https://youtu.be/B-gKw-0qb4w" target="_blank" rel="noopener">English version</a> · <a href="https://www.youtube.com/watch?v=bhCIfcJlyEU" target="_blank" rel="noopener">PT-BR version</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Aug 2021 · FAPESP</span>
-              <span class="list-subtitle">Pesquisadores usam dados de radar para mensurar o impacto do fogo na Amazônia – <a href="https://agencia.fapesp.br" target="_blank" rel="noopener">https://agencia.fapesp.br</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://agencia.fapesp.br/pesquisadores-usam-dados-de-radar-para-mensurar-o-impacto-do-fogo-na-amazonia/36493/" target="_blank" rel="noopener" aria-label="Open FAPESP fire and radar article">
+                <img src="assets/images/media-fapesp-fire-radar.png" alt="" loading="lazy" />
+                <span>Read</span>
+              </a>
+              <div>
+                <span class="list-title">Aug 2021 · FAPESP</span>
+                <span class="list-subtitle">Pesquisadores usam dados de radar para mensurar o impacto do fogo na Amazônia – <a href="https://agencia.fapesp.br/pesquisadores-usam-dados-de-radar-para-mensurar-o-impacto-do-fogo-na-amazonia/36493/" target="_blank" rel="noopener">agencia.fapesp.br</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Mar 2021 · Pesquisas Apontam</span>
-              <span class="list-subtitle">Tutorial: Landsat Time Series Explorer – Earth Engine Apps – <a href="https://youtu.be" target="_blank" rel="noopener">https://youtu.be</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://youtu.be/Pk4HPk4W5LE" target="_blank" rel="noopener" aria-label="Watch Landsat Time Series Explorer tutorial">
+                <img src="assets/images/media-landsat-tutorial.png" alt="" loading="lazy" />
+                <span>Watch</span>
+              </a>
+              <div>
+                <span class="list-title">Mar 2021 · Pesquisas Apontam</span>
+                <span class="list-subtitle">Tutorial: Landsat Time Series Explorer – Earth Engine Apps – <a href="https://youtu.be/Pk4HPk4W5LE" target="_blank" rel="noopener">youtu.be</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Mar 2021 · CEMADEN</span>
-              <span class="list-subtitle">Mudanças climáticas e distúrbios humanos ameaçam a capacidade de remoção de carbono pelas florestas na Amazônia – <a href="https://www.cemaden.gov.br" target="_blank" rel="noopener">https://www.cemaden.gov.br</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://www.cemaden.gov.br/mudancas-climaticas-e-disturbios-humanos-ameacam-a-capacidade-de-remocao-de-carbono-pelas-florestas-na-amazonia/" target="_blank" rel="noopener" aria-label="Open CEMADEN article">
+                <img src="assets/images/media-cemaden.png" alt="" loading="lazy" />
+                <span>Read</span>
+              </a>
+              <div>
+                <span class="list-title">Mar 2021 · CEMADEN</span>
+                <span class="list-subtitle">Mudanças climáticas e distúrbios humanos ameaçam a capacidade de remoção de carbono pelas florestas na Amazônia – <a href="https://www.cemaden.gov.br/mudancas-climaticas-e-disturbios-humanos-ameacam-a-capacidade-de-remocao-de-carbono-pelas-florestas-na-amazonia/" target="_blank" rel="noopener">cemaden.gov.br</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Mar 2021 · INPE</span>
-              <span class="list-subtitle">Artigo na Nature Communications mostra que a capacidade de remoção de carbono pelas florestas secundárias na Amazônia é ameaçada por mudanças climáticas e distúrbios humanos – <a href="https://www.obt.inpe.br" target="_blank" rel="noopener">https://www.obt.inpe.br</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://www.obt.inpe.br/OBT/noticias-obt-inpe/artigo-na-nature-communications-mostra-que-a-capacidade-de-remocao-de-carbono-pelas-florestas-secundarias-na-amazonia-e-ameacada-por-mudancas-climaticas-e-disturbios-humanos" target="_blank" rel="noopener" aria-label="Open INPE Nature Communications article">
+                <img src="assets/images/media-nature.jpeg" alt="" loading="lazy" />
+                <span>Read</span>
+              </a>
+              <div>
+                <span class="list-title">Mar 2021 · INPE</span>
+                <span class="list-subtitle">Artigo na Nature Communications mostra que a capacidade de remoção de carbono pelas florestas secundárias na Amazônia é ameaçada por mudanças climáticas e distúrbios humanos – <a href="https://www.obt.inpe.br/OBT/noticias-obt-inpe/artigo-na-nature-communications-mostra-que-a-capacidade-de-remocao-de-carbono-pelas-florestas-secundarias-na-amazonia-e-ameacada-por-mudancas-climaticas-e-disturbios-humanos" target="_blank" rel="noopener">obt.inpe.br</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Feb 2021 · FAPESP</span>
-              <span class="list-subtitle">Laser mapeia clareiras na Amazônia e auxilia estudos sobre mortalidade das árvores – <a href="https://agencia.fapesp.br" target="_blank" rel="noopener">https://agencia.fapesp.br</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://agencia.fapesp.br/laser-mapeia-clareiras-na-amazonia-e-auxilia-estudos-sobre-mortalidade-das-arvores/35190/" target="_blank" rel="noopener" aria-label="Open FAPESP LiDAR article">
+                <img src="assets/images/media-fapesp-lidar.png" alt="" loading="lazy" />
+                <span>Read</span>
+              </a>
+              <div>
+                <span class="list-title">Feb 2021 · FAPESP</span>
+                <span class="list-subtitle">Laser mapeia clareiras na Amazônia e auxilia estudos sobre mortalidade das árvores – <a href="https://agencia.fapesp.br/laser-mapeia-clareiras-na-amazonia-e-auxilia-estudos-sobre-mortalidade-das-arvores/35190/" target="_blank" rel="noopener">agencia.fapesp.br</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Feb 2021 · Pesquisas Apontam</span>
-              <span class="list-subtitle">Como cientistas sabem quando árvores morrem na Amazônia? – <a href="https://mikhaela.medium.com" target="_blank" rel="noopener">https://mikhaela.medium.com</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://mikhaela.medium.com/como-cientistas-sabem-quando-%C3%A1rvores-morrem-na-amaz%C3%B4nia-beefe32d3f31" target="_blank" rel="noopener" aria-label="Open Pesquisas Apontam article">
+                <img src="assets/images/media-medium-tree-mortality.jpeg" alt="" loading="lazy" />
+                <span>Read</span>
+              </a>
+              <div>
+                <span class="list-title">Feb 2021 · Pesquisas Apontam</span>
+                <span class="list-subtitle">Como cientistas sabem quando árvores morrem na Amazônia? – <a href="https://mikhaela.medium.com/como-cientistas-sabem-quando-%C3%A1rvores-morrem-na-amaz%C3%B4nia-beefe32d3f31" target="_blank" rel="noopener">mikhaela.medium.com</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Jan 2021 · Mongabay</span>
-              <span class="list-subtitle">Lasers find forest gaps to aid tree mortality studies in Brazilian Amazon – <a href="https://news.mongabay.com" target="_blank" rel="noopener">https://news.mongabay.com</a></span>
+            <li class="media-item">
+              <a class="media-thumb" href="https://news.mongabay.com/2021/01/lasers-find-forest-gaps-to-aid-tree-mortality-studies-in-brazilian-amazon/" target="_blank" rel="noopener" aria-label="Open Mongabay LiDAR article">
+                <img src="assets/images/media-mongabay-lidar.png" alt="" loading="lazy" />
+                <span>Read</span>
+              </a>
+              <div>
+                <span class="list-title">Jan 2021 · Mongabay</span>
+                <span class="list-subtitle">Lasers find forest gaps to aid tree mortality studies in Brazilian Amazon – <a href="https://news.mongabay.com/2021/01/lasers-find-forest-gaps-to-aid-tree-mortality-studies-in-brazilian-amazon/" target="_blank" rel="noopener">news.mongabay.com</a></span>
+              </div>
+            </li>
+            <li class="media-item">
+              <a class="media-thumb" href="https://www.obt.inpe.br/OBT/noticias-obt-inpe/estimativas-em-larga-escala-da-dinamica-e-avaliacao-de-mortalidade-na-floresta-amazonica" target="_blank" rel="noopener" aria-label="Open INPE mortality dynamics article">
+                <img src="assets/images/media-inpe-gap.png" alt="" loading="lazy" />
+                <span>Read</span>
+              </a>
+              <div>
+                <span class="list-title">Jan 2021 · INPE</span>
+                <span class="list-subtitle">Estimativas em larga escala da dinâmica e avaliação de mortalidade na floresta amazônica – <a href="https://www.obt.inpe.br/OBT/noticias-obt-inpe/estimativas-em-larga-escala-da-dinamica-e-avaliacao-de-mortalidade-na-floresta-amazonica" target="_blank" rel="noopener">obt.inpe.br</a></span>
+              </div>
+            </li>
+            <li class="media-item">
+              <a class="media-thumb" href="https://www.obt.inpe.br/OBT/noticias-obt-inpe/nova-pesquisa-com-a-participacao-do-inpe-usa-inteligencia-artificial-no-mapeamento-de-larga-escala-de-palmeiras-na-amazonia" target="_blank" rel="noopener" aria-label="Open INPE palms article">
+                <img src="assets/images/media-inpe-palms.png" alt="" loading="lazy" />
+                <span>Read</span>
+              </a>
+              <div>
+                <span class="list-title">Sep 2020 · INPE</span>
+                <span class="list-subtitle">Nova pesquisa com a participação do INPE usa Inteligência Artificial no mapeamento de larga escala de palmeiras na Amazônia – <a href="https://www.obt.inpe.br/OBT/noticias-obt-inpe/nova-pesquisa-com-a-participacao-do-inpe-usa-inteligencia-artificial-no-mapeamento-de-larga-escala-de-palmeiras-na-amazonia" target="_blank" rel="noopener">obt.inpe.br</a></span>
+              </div>
+            </li>
+            <li class="media-item">
+              <a class="media-thumb" href="https://www.obt.inpe.br/OBT/noticias-obt-inpe/florestas-modificadas-pelo-homem-estao-emitindo-mais-carbono" target="_blank" rel="noopener" aria-label="Open INPE modified forests carbon article">
+                <img src="assets/images/media-inpe-carbon.png" alt="" loading="lazy" />
+                <span>Read</span>
+              </a>
+              <div>
+                <span class="list-title">Feb 2020 · INPE</span>
+                <span class="list-subtitle">Florestas modificadas pelo homem estão emitindo mais carbono – <a href="https://www.obt.inpe.br/OBT/noticias-obt-inpe/florestas-modificadas-pelo-homem-estao-emitindo-mais-carbono" target="_blank" rel="noopener">obt.inpe.br</a></span>
+              </div>
             </li>
           </ul>
         </div>
@@ -649,10 +816,34 @@
         </div>
         <div class="contact-grid">
           <div class="card reveal">
-            <h3>Work with me</h3>
+            <h3>Send a message</h3>
             <p>E-mail: ricds [@] hotmail dot com / rdalagnol [@] ctrees dot org</p>
+            <form class="contact-form" action="https://formsubmit.co/ricds@hotmail.com" method="POST">
+              <input type="hidden" name="_subject" value="New message from ricds.github.io" />
+              <input type="hidden" name="_next" value="https://ricds.github.io/#contact" />
+              <input type="hidden" name="_captcha" value="true" />
+              <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hidden-field" />
+              <label>
+                <span>Name</span>
+                <input type="text" name="name" autocomplete="name" required />
+              </label>
+              <label>
+                <span>Email</span>
+                <input type="email" name="email" autocomplete="email" required />
+              </label>
+              <label>
+                <span>Subject</span>
+                <input type="text" name="subject" />
+              </label>
+              <label>
+                <span>Message</span>
+                <textarea name="message" rows="6" required></textarea>
+              </label>
+              <button class="btn primary" type="submit">Send message</button>
+            </form>
+            <p class="muted form-note">The first submission may ask you to confirm the destination email through FormSubmit.</p>
             <div class="contact-links">
-              <a class="btn primary" href="mailto:ricds@hotmail.com">Email</a>
+              <a class="btn ghost" href="mailto:ricds@hotmail.com">Open email client</a>
               <a class="btn ghost" href="https://twitter.com/RicardoDalagnol" target="_blank" rel="noopener">Twitter</a>
               <a class="btn ghost" href="https://www.linkedin.com/in/ricardo-dalagnol-da-silva-68b94a106/" target="_blank" rel="noopener">LinkedIn</a>
             </div>

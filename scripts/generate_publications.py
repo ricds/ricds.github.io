@@ -5,7 +5,7 @@ from typing import Dict, List
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BIB_PATH = ROOT / "my_papers_20260526_bold_up72-74_not73.bib"
+BIB_PATH = ROOT / "assets" / "references" / "my_papers_20260526_bold_up72-74_not73.bib"
 HTML_PATH = ROOT / "index.html"
 
 

@@ -24,7 +24,7 @@
 <div id="container">
   <div id="map"></div>
   <div id="download-links">
-    <img src="ctrees.png" alt="ctrees" style="max-width: 10vw; min-width: 200px; height: auto; margin-bottom: 10px;" />
+    <img src="assets/images/ctrees.png" alt="ctrees" style="max-width: 10vw; min-width: 200px; height: auto; margin-bottom: 10px;" />
     <h2>Canopy Tree Height Maps for the Amazon Forest (mean height composite 2020-2024) by CTrees.org</h2>
 
     Visualize the data here : <a href="https://ee-dalagnol.projects.earthengine.app/view/ctrees-amazon-canopy-height" target="_blank" rel="noopener noreferrer">ctrees-amazon-canopy-height</a>
@@ -128,7 +128,7 @@
   let dragRectangle = null;
 
   // Load GeoJSON file (must be served from a local server)
-  fetch('height_tiles.geojson')
+  fetch('assets/data/height_tiles.geojson')
     .then(res => {
       if (!res.ok) throw new Error('GeoJSON not found or inaccessible');
       return res.json();
