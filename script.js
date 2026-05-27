@@ -8,7 +8,7 @@ const panelTitles = {
   home: defaultTitle,
   about: `About | ${defaultTitle}`,
   research: `Research & Development | ${defaultTitle}`,
-  teaching: `Teaching | ${defaultTitle}`,
+  teaching: `Teaching & Supervision | ${defaultTitle}`,
   media: `Media & Outreach | ${defaultTitle}`,
   resources: `Resources | ${defaultTitle}`,
   contact: `Contact | ${defaultTitle}`,

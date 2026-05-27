@@ -588,7 +588,8 @@ main {
 
 .type-course,
 .type-lecture,
-.type-report {
+.type-report,
+.type-supervision {
   background: rgba(184, 92, 42, 0.12);
   color: var(--copper);
 }
@@ -759,8 +760,26 @@ main {
   color: var(--forest);
 }
 
+.card h4.status-heading {
+  display: inline-flex;
+  margin-top: 22px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(28, 91, 74, 0.12);
+  color: var(--forest);
+  font-size: 0.85rem;
+}
+
+.card h4.status-heading + h4 {
+  margin-top: 10px;
+}
+
 .muted {
   color: rgba(11, 13, 15, 0.55);
+}
+
+.supervision-summary {
+  margin: 6px 0 18px;
 }
 
 .pillars {
