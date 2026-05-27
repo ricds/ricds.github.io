@@ -16,20 +16,20 @@
   <div class="bg-orb orb-2" aria-hidden="true"></div>
 
   <header class="site-header">
-    <a class="logo" href="#" data-panel="home">Ricardo Dalagnol, PhD</a>
+    <a class="logo" href="#home" data-panel="home">Ricardo Dalagnol, PhD</a>
     <nav class="site-nav">
-      <a href="#" data-panel="home" class="active">Home</a>
-      <a href="#" data-panel="about">About</a>
-      <a href="#" data-panel="research">Research & Publications</a>
-      <a href="#" data-panel="teaching">Teaching</a>
-      <a href="#" data-panel="media">Media</a>
+      <a href="#home" data-panel="home" class="active">Home</a>
+      <a href="#about" data-panel="about">About</a>
+      <a href="#research" data-panel="research">Research & Publications</a>
+      <a href="#teaching" data-panel="teaching">Teaching</a>
+      <a href="#media" data-panel="media">Media</a>
       <span class="nav-dropdown">
-        <a href="#" data-panel="resources">Resources</a>
+        <a href="#resources" data-panel="resources">Resources</a>
         <span class="dropdown-menu">
           <a href="https://ricds.github.io/ctrees-amazon-canopy-height.html">CTrees Amazon canopy height</a>
         </span>
       </span>
-      <a href="#" data-panel="contact">Contact</a>
+      <a href="#contact" data-panel="contact">Contact</a>
     </nav>
     <button class="menu-btn" aria-label="Open menu">
       <span></span><span></span><span></span>
@@ -45,8 +45,8 @@
             <h1>Turning satellite data into <span>Forest Intelligence</span>.</h1>
             <p class="lead">I work at the intersection of Forest and Earth Observation with a focus on Geospatial Artificial Intelligence (Geo AI), building data and models that reveal natural and anthropogenic changes, such as deforestation and degradation, and how forests recover from disturbance.</p>
             <div class="hero-actions">
-              <a class="btn primary" href="#" data-panel="contact">Start a collaboration</a>
-              <a class="btn ghost" href="#" data-panel="research">Explore my work</a>
+              <a class="btn primary" href="#contact" data-panel="contact">Start a collaboration</a>
+              <a class="btn ghost" href="#research" data-panel="research">Explore my work</a>
             </div>
             <div class="hero-meta">
               <div>
@@ -62,7 +62,7 @@
           <div class="hero-highlights">
             <div class="card reveal paper-card highlight-card">
               <p class="highlight-label">Recent highlight</p>
-              <img src="https://ricds.wordpress.com/wp-content/uploads/2023/10/image.png?w=1024" alt="Mapping tropical forest degradation with deep learning and Planet NICFI data" />
+              <img src="assets/images/forest-degradation-nicfi.png" alt="Mapping tropical forest degradation with deep learning and Planet NICFI data" />
               <h3>Mapping tropical forest degradation with deep learning and Planet NICFI data</h3>
               <p>First wall‑to‑wall, high‑resolution mapping of tropical forest degradation using NICFI imagery and deep learning—turning subtle canopy damage into measurable, actionable signals.</p>
               <a class="btn ghost" href="https://doi.org/10.1016/j.rse.2023.113798" target="_blank" rel="noopener">Read the paper</a>
@@ -76,7 +76,7 @@
           </div>
           <div class="grid past-highlights">
             <article class="card reveal paper-card">
-              <img src="https://ricds.wordpress.com/wp-content/uploads/2022/07/palm_gif_big3d_v2_2400_1350_ez1200_675.gif?w=1024" alt="Canopy palm cover across the Brazilian Amazon forests mapped with airborne LiDAR data and deep learning" />
+              <img src="assets/images/palm-cover-lidar.gif" alt="Canopy palm cover across the Brazilian Amazon forests mapped with airborne LiDAR data and deep learning" />
               <h3>Canopy palm cover across the Brazilian Amazon forests mapped with airborne LiDAR data and deep learning</h3>
               <p>Combines airborne LiDAR and deep learning to map palm dominance across the Amazon—revealing forest structure and biodiversity signals at unprecedented scale.</p>
               <a class="btn ghost" href="https://doi.org/10.1002/rse2.264" target="_blank" rel="noopener">Read the paper</a>
@@ -95,7 +95,7 @@
         </div>
         <div class="two-col">
           <div class="card reveal about-photo">
-            <img src="https://ricds.wordpress.com/wp-content/uploads/2022/02/ricardo_joshua_trees.jpg?w=768" alt="Joshua Tree National Park in the Mojave Desert" />
+            <img src="assets/images/ricardo-joshua-trees.jpg" alt="Joshua Tree National Park in the Mojave Desert" />
             <p class="muted">This picture is not a tropical forest (off course), but this is nearby where I am living right now in Pasadena, CA, at Joshua Tree National Park in the Mojave Desert. Very hot but astonishing place! Almost outworldly</p>
           </div>
           <div class="card reveal profile-card">
@@ -169,6 +169,19 @@
         </div>
         <div class="card reveal pubs-card">
           <h3>Full list of publications</h3>
+          <div class="pub-tools" aria-label="Publication filters">
+            <label>
+              <span>Search</span>
+              <input id="pub-search" type="search" placeholder="Title, author, journal, DOI" autocomplete="off" />
+            </label>
+            <label>
+              <span>Year</span>
+              <select id="pub-year-filter">
+                <option value="">All years</option>
+              </select>
+            </label>
+            <p id="pub-count" class="muted" aria-live="polite"></p>
+          </div>
           <!-- PUBS_START -->
         <div class="pub-year">
           <h3>2026</h3>

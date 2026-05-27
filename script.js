@@ -3,8 +3,23 @@ const nav = document.querySelector('.site-nav');
 const panelTriggers = document.querySelectorAll('a[data-panel], button[data-panel]');
 const navLinks = document.querySelectorAll('.site-nav a[data-panel]');
 const panels = document.querySelectorAll('.panel');
+const defaultTitle = document.title;
+const panelTitles = {
+  home: defaultTitle,
+  about: `About | ${defaultTitle}`,
+  research: `Research & Publications | ${defaultTitle}`,
+  teaching: `Teaching | ${defaultTitle}`,
+  media: `Media & Outreach | ${defaultTitle}`,
+  resources: `Resources | ${defaultTitle}`,
+  contact: `Contact | ${defaultTitle}`,
+};
 
-const setPanel = (panelName) => {
+const setPanel = (panelName, updateHash = true) => {
+  const targetPanel = document.querySelector(`.panel[data-panel="${panelName}"]`);
+  if (!targetPanel) {
+    panelName = 'home';
+  }
+
   panels.forEach((panel) => {
     panel.classList.toggle('active', panel.dataset.panel === panelName);
   });
@@ -29,6 +44,11 @@ const setPanel = (panelName) => {
     nav.classList.remove('open');
   }
 
+  document.title = panelTitles[panelName] || defaultTitle;
+  if (updateHash && window.location.hash !== `#${panelName}`) {
+    window.history.pushState(null, '', `#${panelName}`);
+  }
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
@@ -48,6 +68,13 @@ panelTriggers.forEach((link) => {
   });
 });
 
+const initialPanelName = window.location.hash.replace('#', '') || 'home';
+setPanel(initialPanelName, false);
+
+window.addEventListener('popstate', () => {
+  setPanel(window.location.hash.replace('#', '') || 'home', false);
+});
+
 const initialPanel = document.querySelector('.panel.active');
 if (initialPanel) {
   initialPanel.querySelectorAll('.reveal').forEach((el) => {
@@ -58,4 +85,54 @@ if (initialPanel) {
 const yearEl = document.getElementById('year');
 if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
+}
+
+const pubSearch = document.getElementById('pub-search');
+const pubYearFilter = document.getElementById('pub-year-filter');
+const pubCount = document.getElementById('pub-count');
+const pubYears = Array.from(document.querySelectorAll('.pub-year'));
+
+if (pubSearch && pubYearFilter && pubYears.length) {
+  const years = pubYears
+    .map((yearBlock) => yearBlock.querySelector('h3')?.textContent.trim())
+    .filter(Boolean);
+
+  years.forEach((year) => {
+    const option = document.createElement('option');
+    option.value = year;
+    option.textContent = year;
+    pubYearFilter.appendChild(option);
+  });
+
+  const filterPublications = () => {
+    const query = pubSearch.value.trim().toLowerCase();
+    const selectedYear = pubYearFilter.value;
+    let visibleCount = 0;
+
+    pubYears.forEach((yearBlock) => {
+      const year = yearBlock.querySelector('h3')?.textContent.trim() || '';
+      const yearMatches = !selectedYear || year === selectedYear;
+      let visibleInYear = 0;
+
+      yearBlock.querySelectorAll('li').forEach((item) => {
+        const textMatches = !query || item.textContent.toLowerCase().includes(query);
+        const isVisible = yearMatches && textMatches;
+        item.hidden = !isVisible;
+        if (isVisible) {
+          visibleCount += 1;
+          visibleInYear += 1;
+        }
+      });
+
+      yearBlock.hidden = visibleInYear === 0;
+    });
+
+    if (pubCount) {
+      pubCount.textContent = `${visibleCount} publication${visibleCount === 1 ? '' : 's'} shown`;
+    }
+  };
+
+  pubSearch.addEventListener('input', filterPublications);
+  pubYearFilter.addEventListener('change', filterPublications);
+  filterPublications();
 }
