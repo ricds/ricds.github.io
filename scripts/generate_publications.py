@@ -5,7 +5,7 @@ from typing import Dict, List
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BIB_PATH = ROOT / "my_papers_20241007_bold.bib"
+BIB_PATH = ROOT / "my_papers_20260526_bold_up72-74_not73.bib"
 HTML_PATH = ROOT / "index.html"
 
 
@@ -169,10 +169,17 @@ def cleanup_latex(text: str) -> str:
     if not text:
         return text
     text = _decode_latex_accents(text)
+    text = text.replace("\\textlessspan style=\"font-variant:small-caps;\"\\textgreater", "")
+    text = re.sub(r"\\textlessspan\b.*?\\textgreater", "", text)
+    text = text.replace("\\textless/span\\textgreater", "")
     text = re.sub(r"\\textbf\{([^}]*)\}", r"\1", text)
     text = text.replace(r"\&", "&")
     text = re.sub(r"[{}]", "", text)
+    text = text.replace("\\textlessspan style=\"font-variant:small-caps;\"\\textgreater", "")
+    text = re.sub(r"\\textlessspan\b.*?\\textgreater", "", text)
+    text = text.replace("\\textless/span\\textgreater", "")
     text = re.sub(r"\s+", " ", text).strip()
+    text = text.replace(" ,", ",")
 
     replacements = {
         "Ã©": "é",
