@@ -87,6 +87,24 @@ if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
 }
 
+const heroSlider = document.querySelector('[data-slider]');
+if (heroSlider) {
+  const slides = Array.from(heroSlider.querySelectorAll('img'));
+  const caption = heroSlider.querySelector('.image-caption');
+  let activeSlide = 0;
+
+  if (slides.length > 1) {
+    window.setInterval(() => {
+      slides[activeSlide].classList.remove('active');
+      activeSlide = (activeSlide + 1) % slides.length;
+      slides[activeSlide].classList.add('active');
+      if (caption) {
+        caption.textContent = slides[activeSlide].dataset.caption || '';
+      }
+    }, 5000);
+  }
+}
+
 const pubSearch = document.getElementById('pub-search');
 const pubYearFilter = document.getElementById('pub-year-filter');
 const pubCount = document.getElementById('pub-count');

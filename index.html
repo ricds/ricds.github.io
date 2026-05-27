@@ -66,8 +66,13 @@
     <div class="panel-stage">
       <section id="home" class="section panel active home-panel" data-panel="home">
         <div class="hero">
-          <div class="hero-photo">
-            <img src="assets/images/jaru_2015_LSB_6764-227.jpg" alt="Ricardo Dalagnol during fieldwork in Jaru, Brazil" />
+          <div class="hero-photo" data-slider>
+            <img class="active" src="assets/images/jaru_2015_LSB_6764-227.jpg" alt="Ricardo Dalagnol during fieldwork in Jaru, Brazil" data-caption="Rebio Jaru, Rondônia, 2015" />
+            <img src="assets/images/jaru_2015_LSB_6727-194.jpg" alt="Installing pressure dendrometer in Rebio Jaru, Brazil" data-caption="Installing pressure dendrometer at Rebio Jaru, Rondônia, 2015" />
+            <img src="assets/images/bananal_2015_IMG_20151114_144432176.jpg" alt="Measuring tree growth in Bananal Island, Tocantins, Brazil" data-caption="Measuring tree growth in Bananal Island, Tocantins, Brazil, 2015" />
+            <img src="assets/images/bananal_2015_IMG_20151114_102003658_HDR.jpg" alt="Campsite at Rio Javaés in Bananal Island, Tocantins, Brazil" data-caption="Campsite at Rio Javaés in Bananal Island, Tocantins, Brazil, 2015" />
+            <img src="assets/images/manaus_2015_Sentek Manaus_7.jpeg" alt="Installing soil moisture equipment at Manaus K34 tower, Brazil" data-caption="Happy about breaking a hammer to install soil moisture equipment at Manaus K34 tower, Brazil, 2015" />
+            <img src="assets/images/secondary_forest_tapajos_2012_DSC09801.JPG" alt="Secondary forest in Tapajós, Pará, Brazil" data-caption="Secondary forest Tapajós, Pará, Brazil, 2012" />
             <p class="image-caption">Rebio Jaru, Rondônia, 2015</p>
           </div>
           <div class="hero-text">
@@ -97,7 +102,7 @@
             <div>
               <p class="highlight-label">Platform release</p>
               <h2>REDD+AI at CTrees</h2>
-              <p>In 2024, CTrees released REDD+AI, an open platform for mapping tropical forest degradation and attributing it to logging, fire, and roads across tropical countries and subnational jurisdictions.</p>
+              <p>In 2024, CTrees released REDD+AI, an open platform for mapping tropical forest degradation and attributing it to logging, fire, and roads across tropical countries and subnational jurisdictions. I led the development of the activity data behind the platform, building on methods from <a href="https://doi.org/10.1016/j.rse.2023.113798" target="_blank" rel="noopener">Dalagnol et al. (2023)</a> and collaborative work in <a href="https://doi.org/10.3390/rs15020521" target="_blank" rel="noopener">Wagner et al. (2023)</a>.</p>
             </div>
             <div class="reddai-options" aria-label="REDD+AI visual">
               <a class="reddai-visual reddai-photo" href="https://ctrees.org/reddai" target="_blank" rel="noopener">
@@ -138,6 +143,7 @@
         <div class="about-grid">
           <div class="card reveal about-photo">
             <img src="assets/images/ricardo-joshua-trees.jpg" alt="Joshua Tree National Park in the Mojave Desert" />
+            <p class="image-caption">Joshua Tree National Park, California, 2022</p>
             <p class="muted">This picture is not a tropical forest (off course), but this is nearby where I am living right now in Pasadena, CA, at Joshua Tree National Park in the Mojave Desert. Very hot but astonishing place! Almost outworldly</p>
           </div>
           <div class="card reveal profile-card">
@@ -214,21 +220,26 @@
           <p>Online record at Google Scholar: <a href="https://scholar.google.com.br/citations?hl=pt-BR&user=4ecvtoEAAAAJ" target="_blank" rel="noopener">https://scholar.google.com.br/citations?hl=pt-BR&user=4ecvtoEAAAAJ</a></p>
         </div>
         <div class="card reveal development-card">
-          <h3>Applied REDD+ and dMRV development</h3>
-          <p>Beyond peer-reviewed publications, I lead applied technical work that turns remote sensing, AI, and forest carbon methods into operational datasets for jurisdictional REDD+ and dMRV programs.</p>
+          <div class="development-intro">
+            <div>
+              <h3>Applied REDD+ and dMRV development</h3>
+              <p>Beyond peer-reviewed publications, I lead applied technical work that turns remote sensing, AI, and forest carbon methods into operational datasets for jurisdictional REDD+ and dMRV programs.</p>
+            </div>
+            <img src="assets/images/forest-spin.gif" alt="Rotating visualization of forest structure" loading="lazy" />
+          </div>
           <h4>Technical reports</h4>
           <ul class="list">
             <li>
               <span class="list-title">Dalagnol, Ricardo, et al. (2024). Forest Cover Benchmark Maps and Activity Data to Support VM0048 Implementation across 6 Tropical Jurisdictions in 3 Countries.</span>
-              <span class="list-subtitle">Report prepared for Verra VCS.</span>
+              <span class="list-subtitle">Lead author. Report prepared for Verra VCS.</span>
             </li>
             <li>
               <span class="list-title">Dalagnol, Ricardo, et al. (2025). Forest Cover Benchmark Maps and Activity Data to Support VM0048 Implementation across 36 Tropical Jurisdictions in 16 Countries.</span>
-              <span class="list-subtitle">Report prepared for Verra VCS.</span>
+              <span class="list-subtitle">Lead author. Report prepared for Verra VCS.</span>
             </li>
             <li>
               <span class="list-title">Dalagnol, Ricardo, et al. (2024-2026). Due-diligence dMRV assessments for 10 ART-TREES and FCPF jurisdictional REDD+ opportunities.</span>
-              <span class="list-subtitle">Technical development integrating activity data, remote sensing diagnostics, and geospatial quality checks for buyer-side evaluation of jurisdictional forest carbon performance.</span>
+              <span class="list-subtitle">Lead technical development integrating activity data, remote sensing diagnostics, and geospatial quality checks for buyer-side evaluation of jurisdictional forest carbon performance.</span>
             </li>
           </ul>
         </div>
@@ -545,38 +556,71 @@
           <p>Courses, workshops, and invited lectures.</p>
         </div>
         <div class="card reveal">
-          <ul class="list">
-            <li>
-              <span class="list-title">2021 · Short course “Deep Learning for Remote Sensing images with R language”</span>
-              <span class="list-subtitle">IEEE GRSS-ISPRS SC 2021 – <a href="http://grss-isprs.udesc.br/" target="_blank" rel="noopener">http://grss-isprs.udesc.br/</a> · Recording: <a href="https://youtu.be/N3CHgRlRqOA" target="_blank" rel="noopener">https://youtu.be/N3CHgRlRqOA</a></span>
+          <ul class="list thumb-list">
+            <li class="thumb-item">
+              <a class="link-thumb" href="https://youtu.be/N3CHgRlRqOA" target="_blank" rel="noopener" aria-label="Watch Deep Learning for Remote Sensing images with R language">
+                <img src="assets/images/video-deep-learning-rs.jpg" alt="" loading="lazy" />
+                <span>Video</span>
+              </a>
+              <div>
+                <span class="list-title">2021 · Short course “Deep Learning for Remote Sensing images with R language”</span>
+                <span class="list-subtitle">IEEE GRSS-ISPRS SC 2021 – <a href="http://grss-isprs.udesc.br/" target="_blank" rel="noopener">http://grss-isprs.udesc.br/</a> · Recording: <a href="https://youtu.be/N3CHgRlRqOA" target="_blank" rel="noopener">https://youtu.be/N3CHgRlRqOA</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2021 · Short course “Introduction to Google Earth Engine with R language”</span>
-              <span class="list-subtitle">IEEE GRSS-ISPRS SC 2021 – <a href="http://grss-isprs.udesc.br/" target="_blank" rel="noopener">http://grss-isprs.udesc.br/</a> · Recording: <a href="https://youtu.be/SHXuIpjU3YE" target="_blank" rel="noopener">https://youtu.be/SHXuIpjU3YE</a></span>
+            <li class="thumb-item">
+              <a class="link-thumb" href="https://youtu.be/SHXuIpjU3YE" target="_blank" rel="noopener" aria-label="Watch Introduction to Google Earth Engine with R language">
+                <img src="assets/images/video-google-earth-engine-r.jpg" alt="" loading="lazy" />
+                <span>Video</span>
+              </a>
+              <div>
+                <span class="list-title">2021 · Short course “Introduction to Google Earth Engine with R language”</span>
+                <span class="list-subtitle">IEEE GRSS-ISPRS SC 2021 – <a href="http://grss-isprs.udesc.br/" target="_blank" rel="noopener">http://grss-isprs.udesc.br/</a> · Recording: <a href="https://youtu.be/SHXuIpjU3YE" target="_blank" rel="noopener">https://youtu.be/SHXuIpjU3YE</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2021 · 60h Course “Special Topics in Spatio-temporal data analysis”</span>
-              <span class="list-subtitle">Postgraduate program of Environmental Science and Technology (PPGCTA), Federal University of Santa Maria (UFSM), Brazil</span>
+            <li class="thumb-item">
+              <span class="link-thumb type-course">Course</span>
+              <div>
+                <span class="list-title">2021 · 60h Course “Special Topics in Spatio-temporal data analysis”</span>
+                <span class="list-subtitle">Postgraduate program of Environmental Science and Technology (PPGCTA), Federal University of Santa Maria (UFSM), Brazil</span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2021 · Mini-course “Deep Learning para Imagens de Sensoriamento Remoto”</span>
-              <span class="list-subtitle">WorCAP 2021 – <a href="http://www.inpe.br/worcap/2021/" target="_blank" rel="noopener">http://www.inpe.br/worcap/2021/</a> · Recording: <a href="https://youtu.be/foRhRg6VaCQ" target="_blank" rel="noopener">https://youtu.be/foRhRg6VaCQ</a></span>
+            <li class="thumb-item">
+              <a class="link-thumb" href="https://youtu.be/foRhRg6VaCQ" target="_blank" rel="noopener" aria-label="Watch Deep Learning para Imagens de Sensoriamento Remoto">
+                <img src="assets/images/video-deep-learning-pt.jpg" alt="" loading="lazy" />
+                <span>Video</span>
+              </a>
+              <div>
+                <span class="list-title">2021 · Mini-course “Deep Learning para Imagens de Sensoriamento Remoto”</span>
+                <span class="list-subtitle">WorCAP 2021 – <a href="http://www.inpe.br/worcap/2021/" target="_blank" rel="noopener">http://www.inpe.br/worcap/2021/</a> · Recording: <a href="https://youtu.be/foRhRg6VaCQ" target="_blank" rel="noopener">https://youtu.be/foRhRg6VaCQ</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2021 · Lecture “Lidar data applied for landscape ecology and vegetation studies”</span>
-              <span class="list-subtitle">Introduction to Landscape Ecology and Remote Sensing – BSc Geography – University of Manchester, UK</span>
+            <li class="thumb-item">
+              <span class="link-thumb type-lecture">Lecture</span>
+              <div>
+                <span class="list-title">2021 · Lecture “Lidar data applied for landscape ecology and vegetation studies”</span>
+                <span class="list-subtitle">Introduction to Landscape Ecology and Remote Sensing – BSc Geography – University of Manchester, UK</span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2021 · Lecture “Neural networks with geospatial data”</span>
-              <span class="list-subtitle">Special Topics in Artificial Intelligence: machine learning with geographical data – BSc Cartography – Federal Institute of Goiás (IFG), Brazil</span>
+            <li class="thumb-item">
+              <span class="link-thumb type-lecture">Lecture</span>
+              <div>
+                <span class="list-title">2021 · Lecture “Neural networks with geospatial data”</span>
+                <span class="list-subtitle">Special Topics in Artificial Intelligence: machine learning with geographical data – BSc Cartography – Federal Institute of Goiás (IFG), Brazil</span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2020 · Lecture “Introduction to Airborne LiDAR data for vegetation studies”</span>
-              <span class="list-subtitle">Forest and Biogeography course – MSc/PhD Remote Sensing – INPE, Brazil</span>
+            <li class="thumb-item">
+              <span class="link-thumb type-lecture">Lecture</span>
+              <div>
+                <span class="list-title">2020 · Lecture “Introduction to Airborne LiDAR data for vegetation studies”</span>
+                <span class="list-subtitle">Forest and Biogeography course – MSc/PhD Remote Sensing – INPE, Brazil</span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2020 · Lecture “Introduction to remote sensing time series analysis for vegetation studies”</span>
-              <span class="list-subtitle">Forest and Biogeography course – MSc/PhD Remote Sensing – INPE, Brazil</span>
+            <li class="thumb-item">
+              <span class="link-thumb type-lecture">Lecture</span>
+              <div>
+                <span class="list-title">2020 · Lecture “Introduction to remote sensing time series analysis for vegetation studies”</span>
+                <span class="list-subtitle">Forest and Biogeography course – MSc/PhD Remote Sensing – INPE, Brazil</span>
+              </div>
             </li>
           </ul>
         </div>
@@ -750,60 +794,93 @@
         </div>
         <div class="card reveal">
           <h3>Dataset</h3>
-          <ul class="list">
-            <li>
-              <span class="list-title">2025 · Canopy Tree Height Maps for the Amazon Forest (mean height composite 2020-2024) by CTrees.org.</span>
-              <span class="list-subtitle">Dataset page: <a href="https://ricds.github.io/ctrees-amazon-canopy-height.html" target="_blank" rel="noopener">https://ricds.github.io/ctrees-amazon-canopy-height.html</a></span>
+          <ul class="list thumb-list">
+            <li class="thumb-item">
+              <a class="link-thumb type-dataset" href="https://ricds.github.io/ctrees-amazon-canopy-height.html" target="_blank" rel="noopener">Data</a>
+              <div>
+                <span class="list-title">2025 · Canopy Tree Height Maps for the Amazon Forest (mean height composite 2020-2024) by CTrees.org.</span>
+                <span class="list-subtitle">Dataset page: <a href="https://ricds.github.io/ctrees-amazon-canopy-height.html" target="_blank" rel="noopener">https://ricds.github.io/ctrees-amazon-canopy-height.html</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2021 · Dataset for “Deep Learning with remote sensing data for image segmentation: example of rice crop mapping using Sentinel-2 images” (v2).</span>
-              <span class="list-subtitle">Zenodo: <a href="https://doi.org/10.5281/zenodo.5643210" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.5643210</a></span>
+            <li class="thumb-item">
+              <a class="link-thumb type-zenodo" href="https://doi.org/10.5281/zenodo.5643210" target="_blank" rel="noopener">Zenodo</a>
+              <div>
+                <span class="list-title">2021 · Dataset for “Deep Learning with remote sensing data for image segmentation: example of rice crop mapping using Sentinel-2 images” (v2).</span>
+                <span class="list-subtitle">Zenodo: <a href="https://doi.org/10.5281/zenodo.5643210" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.5643210</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2020 · Data from “Large-scale variations in the dynamics of Amazon forest canopy gaps...” (v1).</span>
-              <span class="list-subtitle">Zenodo: <a href="http://doi.org/10.5281/zenodo.4262543" target="_blank" rel="noopener">http://doi.org/10.5281/zenodo.4262543</a></span>
+            <li class="thumb-item">
+              <a class="link-thumb type-zenodo" href="http://doi.org/10.5281/zenodo.4262543" target="_blank" rel="noopener">Zenodo</a>
+              <div>
+                <span class="list-title">2020 · Data from “Large-scale variations in the dynamics of Amazon forest canopy gaps...” (v1).</span>
+                <span class="list-subtitle">Zenodo: <a href="http://doi.org/10.5281/zenodo.4262543" target="_blank" rel="noopener">http://doi.org/10.5281/zenodo.4262543</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2019 · The MANVI product: MODIS (MAIAC) nadir-solar adjusted vegetation indices (EVI and NDVI) for South America (v1).</span>
-              <span class="list-subtitle">Zenodo: <a href="http://doi.org/10.5281/zenodo.3159488" target="_blank" rel="noopener">http://doi.org/10.5281/zenodo.3159488</a></span>
+            <li class="thumb-item">
+              <a class="link-thumb type-zenodo" href="http://doi.org/10.5281/zenodo.3159488" target="_blank" rel="noopener">Zenodo</a>
+              <div>
+                <span class="list-title">2019 · The MANVI product: MODIS (MAIAC) nadir-solar adjusted vegetation indices (EVI and NDVI) for South America (v1).</span>
+                <span class="list-subtitle">Zenodo: <a href="http://doi.org/10.5281/zenodo.3159488" target="_blank" rel="noopener">http://doi.org/10.5281/zenodo.3159488</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2018 · Data from “Life cycle of bamboo in the southwestern Amazon and its relation to fire events” (v2).</span>
-              <span class="list-subtitle">Zenodo: <a href="http://doi.org/10.5281/zenodo.1438746" target="_blank" rel="noopener">http://doi.org/10.5281/zenodo.1438746</a></span>
+            <li class="thumb-item">
+              <a class="link-thumb type-zenodo" href="http://doi.org/10.5281/zenodo.1438746" target="_blank" rel="noopener">Zenodo</a>
+              <div>
+                <span class="list-title">2018 · Data from “Life cycle of bamboo in the southwestern Amazon and its relation to fire events” (v2).</span>
+                <span class="list-subtitle">Zenodo: <a href="http://doi.org/10.5281/zenodo.1438746" target="_blank" rel="noopener">http://doi.org/10.5281/zenodo.1438746</a></span>
+              </div>
             </li>
           </ul>
         </div>
         <div class="card reveal">
           <h3>Code</h3>
-          <ul class="list">
-            <li>
-              <span class="list-title">2021 · DL_RS_GEE: Deep Learning with Remote Sensing imagery from Google Earth Engine with R language (v1.1.0).</span>
-              <span class="list-subtitle">GitHub: <a href="https://github.com/ricds/DL_RS_GEE" target="_blank" rel="noopener">https://github.com/ricds/DL_RS_GEE</a></span>
+          <ul class="list thumb-list">
+            <li class="thumb-item">
+              <a class="link-thumb type-github" href="https://github.com/ricds/DL_RS_GEE" target="_blank" rel="noopener">GitHub</a>
+              <div>
+                <span class="list-title">2021 · DL_RS_GEE: Deep Learning with Remote Sensing imagery from Google Earth Engine with R language (v1.1.0).</span>
+                <span class="list-subtitle">GitHub: <a href="https://github.com/ricds/DL_RS_GEE" target="_blank" rel="noopener">https://github.com/ricds/DL_RS_GEE</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">2022 · maiac_processing: process daily MODIS MAIAC data to BRDF-corrected 16-day and monthly mosaic composites (v1.0).</span>
-              <span class="list-subtitle">Zenodo: <a href="https://doi.org/10.5281/zenodo.6561351" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.6561351</a> · GitHub: <a href="https://github.com/ricds/maiac_processing" target="_blank" rel="noopener">https://github.com/ricds/maiac_processing</a></span>
+            <li class="thumb-item">
+              <a class="link-thumb type-github" href="https://github.com/ricds/maiac_processing" target="_blank" rel="noopener">GitHub</a>
+              <div>
+                <span class="list-title">2022 · maiac_processing: process daily MODIS MAIAC data to BRDF-corrected 16-day and monthly mosaic composites (v1.0).</span>
+                <span class="list-subtitle">Zenodo: <a href="https://doi.org/10.5281/zenodo.6561351" target="_blank" rel="noopener">https://doi.org/10.5281/zenodo.6561351</a> · GitHub: <a href="https://github.com/ricds/maiac_processing" target="_blank" rel="noopener">https://github.com/ricds/maiac_processing</a></span>
+              </div>
             </li>
           </ul>
         </div>
         <div class="card reveal">
           <h3>Guide & Other materials</h3>
-          <ul class="list">
-            <li>
-              <span class="list-title">2020 · Tensorflow and Keras installation steps for Deep Learning applications in Rstudio (v1.0).</span>
-              <span class="list-subtitle">Zenodo: <a href="http://doi.org/10.5281/zenodo.3929710" target="_blank" rel="noopener">http://doi.org/10.5281/zenodo.3929710</a></span>
+          <ul class="list thumb-list">
+            <li class="thumb-item">
+              <a class="link-thumb type-zenodo" href="http://doi.org/10.5281/zenodo.3929710" target="_blank" rel="noopener">Zenodo</a>
+              <div>
+                <span class="list-title">2020 · Tensorflow and Keras installation steps for Deep Learning applications in Rstudio (v1.0).</span>
+                <span class="list-subtitle">Zenodo: <a href="http://doi.org/10.5281/zenodo.3929710" target="_blank" rel="noopener">http://doi.org/10.5281/zenodo.3929710</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Blog post about Random Forest</span>
-              <span class="list-subtitle"><a href="https://gsverhoeven.github.io/post/random-forest-rfe_vs_tuning/" target="_blank" rel="noopener">https://gsverhoeven.github.io/post/random-forest-rfe_vs_tuning/</a></span>
+            <li class="thumb-item">
+              <a class="link-thumb type-web" href="https://gsverhoeven.github.io/post/random-forest-rfe_vs_tuning/" target="_blank" rel="noopener">Web</a>
+              <div>
+                <span class="list-title">Blog post about Random Forest</span>
+                <span class="list-subtitle"><a href="https://gsverhoeven.github.io/post/random-forest-rfe_vs_tuning/" target="_blank" rel="noopener">https://gsverhoeven.github.io/post/random-forest-rfe_vs_tuning/</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Anuário TREES 2021</span>
-              <span class="list-subtitle"><a href="http://mtc-m21d.sid.inpe.br/col/sid.inpe.br/mtc-m21d/2022/06.21.11.58/doc/thisInformationItemHomePage.html" target="_blank" rel="noopener">http://mtc-m21d.sid.inpe.br/col/sid.inpe.br/mtc-m21d/2022/06.21.11.58/doc/thisInformationItemHomePage.html</a></span>
+            <li class="thumb-item">
+              <a class="link-thumb type-report" href="http://mtc-m21d.sid.inpe.br/col/sid.inpe.br/mtc-m21d/2022/06.21.11.58/doc/thisInformationItemHomePage.html" target="_blank" rel="noopener">Report</a>
+              <div>
+                <span class="list-title">Anuário TREES 2021</span>
+                <span class="list-subtitle"><a href="http://mtc-m21d.sid.inpe.br/col/sid.inpe.br/mtc-m21d/2022/06.21.11.58/doc/thisInformationItemHomePage.html" target="_blank" rel="noopener">http://mtc-m21d.sid.inpe.br/col/sid.inpe.br/mtc-m21d/2022/06.21.11.58/doc/thisInformationItemHomePage.html</a></span>
+              </div>
             </li>
-            <li>
-              <span class="list-title">Anuário TREES 2022</span>
-              <span class="list-subtitle"><a href="http://mtc-m21d.sid.inpe.br/col/sid.inpe.br/mtc-m21d/2023/10.25.12.35/doc/thisInformationItemHomePage.html" target="_blank" rel="noopener">http://mtc-m21d.sid.inpe.br/col/sid.inpe.br/mtc-m21d/2023/10.25.12.35/doc/thisInformationItemHomePage.html</a></span>
+            <li class="thumb-item">
+              <a class="link-thumb type-report" href="http://mtc-m21d.sid.inpe.br/col/sid.inpe.br/mtc-m21d/2023/10.25.12.35/doc/thisInformationItemHomePage.html" target="_blank" rel="noopener">Report</a>
+              <div>
+                <span class="list-title">Anuário TREES 2022</span>
+                <span class="list-subtitle"><a href="http://mtc-m21d.sid.inpe.br/col/sid.inpe.br/mtc-m21d/2023/10.25.12.35/doc/thisInformationItemHomePage.html" target="_blank" rel="noopener">http://mtc-m21d.sid.inpe.br/col/sid.inpe.br/mtc-m21d/2023/10.25.12.35/doc/thisInformationItemHomePage.html</a></span>
+              </div>
             </li>
           </ul>
         </div>
@@ -812,17 +889,13 @@
       <section id="contact" class="section panel contact" data-panel="contact">
         <div class="section-header">
           <h2>Contact</h2>
-          <p>Get in touch using the email or Twitter. I will respond as quickly as possible!</p>
+          <p>Send a message about collaborations, technical work, research, or data products.</p>
         </div>
         <div class="contact-grid">
           <div class="card reveal">
-            <h3>Send a message</h3>
+            <h3>Message</h3>
             <p>E-mail: ricds [@] hotmail dot com / rdalagnol [@] ctrees dot org</p>
-            <form class="contact-form" action="https://formsubmit.co/ricds@hotmail.com" method="POST">
-              <input type="hidden" name="_subject" value="New message from ricds.github.io" />
-              <input type="hidden" name="_next" value="https://ricds.github.io/#contact" />
-              <input type="hidden" name="_captcha" value="true" />
-              <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hidden-field" />
+            <form class="contact-form" action="https://formspree.io/f/xnjrorzd" method="POST">
               <label>
                 <span>Name</span>
                 <input type="text" name="name" autocomplete="name" required />
@@ -841,9 +914,8 @@
               </label>
               <button class="btn primary" type="submit">Send message</button>
             </form>
-            <p class="muted form-note">The first submission may ask you to confirm the destination email through FormSubmit.</p>
             <div class="contact-links">
-              <a class="btn ghost" href="mailto:ricds@hotmail.com">Open email client</a>
+              <a class="btn ghost" href="mailto:ricds@hotmail.com">Email</a>
               <a class="btn ghost" href="https://twitter.com/RicardoDalagnol" target="_blank" rel="noopener">Twitter</a>
               <a class="btn ghost" href="https://www.linkedin.com/in/ricardo-dalagnol-da-silva-68b94a106/" target="_blank" rel="noopener">LinkedIn</a>
             </div>
