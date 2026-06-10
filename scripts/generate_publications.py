@@ -233,6 +233,34 @@ def parse_author(author_field: str) -> str:
     return last or first_name
 
 
+def clean_pub_detail(value: str) -> str:
+    value = cleanup_latex(value)
+    if value.lower() in {"n/a", "na", "none", "00"}:
+        return ""
+    return value
+
+
+def is_issue(value: str) -> bool:
+    if not value:
+        return False
+    month_names = {
+        "january",
+        "february",
+        "march",
+        "april",
+        "may",
+        "june",
+        "july",
+        "august",
+        "september",
+        "october",
+        "november",
+        "december",
+    }
+    words = {word.lower() for word in re.findall(r"[A-Za-z]+", value)}
+    return bool(re.search(r"\d", value)) and not words.intersection(month_names)
+
+
 def parse_bib_entry(raw: str) -> Dict[str, str]:
     head_start = raw.find("{")
     head_end = raw.rfind("}")
@@ -255,9 +283,16 @@ def parse_bib_entry(raw: str) -> Dict[str, str]:
     title = cleanup_latex(data.get("title", ""))
     year = data.get("year", "")
     date = data.get("date", "")
-    journal = cleanup_latex(data.get("journal", ""))
+    journal = cleanup_latex(data.get("journal") or data.get("journaltitle", ""))
+    volume = clean_pub_detail(data.get("volume", ""))
+    issue = clean_pub_detail(data.get("number", ""))
+    pages = clean_pub_detail(data.get("pages", ""))
     doi = data.get("doi", "")
+    url = data.get("url", "")
     author = parse_author(data.get("author", ""))
+
+    if not is_issue(issue):
+        issue = ""
 
     if not year and date:
         match = re.search(r"\d{4}", date)
@@ -278,7 +313,11 @@ def parse_bib_entry(raw: str) -> Dict[str, str]:
         "year": year_int,
         "title": title,
         "journal": journal,
+        "volume": volume,
+        "issue": issue,
+        "pages": pages,
         "doi_url": doi_url,
+        "url": url,
         "author": author,
     }
 
@@ -298,10 +337,23 @@ def build_publications(entries: List[Dict[str, str]]) -> str:
             )
             if entry["journal"]:
                 line += f". <span class=\"pub-journal\">{entry['journal']}</span>"
+                if entry["volume"]:
+                    line += f", <span class=\"pub-volume\">{entry['volume']}</span>"
+                    if entry["issue"]:
+                        line += f"(<span class=\"pub-issue\">{entry['issue']}</span>)"
+                    if entry["pages"]:
+                        line += f", <span class=\"pub-pages\">{entry['pages']}</span>"
+                elif entry["pages"]:
+                    line += f", <span class=\"pub-pages\">{entry['pages']}</span>"
             if entry["doi_url"]:
                 line += (
                     f". DOI: <a href=\"{entry['doi_url']}\" target=\"_blank\" "
                     f"rel=\"noopener\">{entry['doi_url']}</a>"
+                )
+            elif entry["url"]:
+                line += (
+                    f". URL: <a href=\"{entry['url']}\" target=\"_blank\" "
+                    f"rel=\"noopener\">{entry['url']}</a>"
                 )
             line += "."
 
