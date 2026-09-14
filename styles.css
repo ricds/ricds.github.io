@@ -427,6 +427,12 @@ main {
   margin-bottom: 16px;
 }
 
+.paper-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .home-note {
   font-weight: 500;
 }

@@ -5,7 +5,7 @@ from typing import Dict, List
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BIB_PATH = ROOT / "assets" / "references" / "my_papers_20260526_bold_up72-74_not73.bib"
+BIB_PATH = ROOT / "assets" / "references" / "my_papers_20260830_bold_up76.bib"
 HTML_PATH = ROOT / "index.html"
 
 
@@ -410,9 +410,11 @@ def main() -> None:
 
     new_section = build_publications(parsed)
 
-    html = args.html.read_text(encoding="utf-8", errors="replace")
+    with args.html.open("r", encoding="utf-8", errors="replace", newline="") as handle:
+        html = handle.read()
     updated = _replace_between_markers(html, new_section)
-    args.output.write_text(updated, encoding="utf-8")
+    with args.output.open("w", encoding="utf-8", newline="") as handle:
+        handle.write(updated)
 
     print(f"Updated publications list with {len(parsed)} items.")
 
