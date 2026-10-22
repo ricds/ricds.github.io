@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forest Disturbance Game</title>
+  <meta name="description" content="Interpret Sentinel-2 before/after imagery: deforestation, fire, logging, windthrow, thinning, landslides - or no disturbance at all.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="game.css?v=3">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="../">ricds.github.io</a>
+    <div class="row-tight">
+      <button type="button" class="linkbtn" id="btn-class-view" data-i18n="classResults"></button>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="on">EN</button>
+        <button type="button" data-lang="pt">PT</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="app">
+    <!-- start -->
+    <section id="screen-start" class="screen">
+      <div class="start-grid">
+        <div>
+          <p class="kicker" data-i18n="kicker"></p>
+          <h1 data-i18n="title"></h1>
+          <p class="lead" data-i18n="intro"></p>
+          <ul class="howto">
+            <li data-i18n="howto1"></li>
+            <li data-i18n="howto2"></li>
+            <li data-i18n="howto3"></li>
+            <li data-i18n="howto4"></li>
+          </ul>
+      <form id="start-form" class="card form" autocomplete="on" onsubmit="event.preventDefault()">
+        <label><span data-i18n="name"></span>
+          <input id="in-name" name="name" required maxlength="80" autocomplete="name">
+        </label>
+        <label><span data-i18n="email"></span>
+          <input id="in-email" name="email" type="email" required maxlength="120" autocomplete="email">
+        </label>
+        <label><span data-i18n="classLbl"></span>
+          <select id="in-class" name="class"></select>
+        </label>
+        <div class="row">
+          <button class="btn primary" type="submit" data-i18n="start"></button>
+          <button class="btn" id="btn-start-class" type="button" data-i18n="seeClassRanking"></button>
+        </div>
+        <p class="small" data-i18n="privacy"></p>
+      </form>
+      <div id="resume" class="card hidden">
+        <p data-i18n="resumeText"></p>
+        <div class="row">
+          <button class="btn primary" id="btn-resume" type="button"></button>
+          <button class="btn" id="btn-restart" type="button" data-i18n="restart"></button>
+        </div>
+      </div>
+        </div>
+        <figure class="hero">
+          <img src="img/hero.jpg" alt="" id="hero-img">
+          <figcaption class="small" data-i18n="heroCaption"></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- question -->
+    <section id="screen-quiz" class="screen hidden">
+      <div id="review-bar" class="review-bar hidden">
+        <b data-i18n="reviewMode"></b>
+        <button type="button" class="btn" id="rv-prev">&lsaquo;</button>
+        <button type="button" class="btn" id="rv-next">&rsaquo;</button>
+        <button type="button" class="btn" id="rv-answer" data-i18n="reviewAnswer"></button>
+        <span class="small" data-i18n="reviewHelp"></span>
+      </div>
+      <div class="progress">
+        <span id="q-count"></span>
+        <div class="bar"><div id="q-bar"></div></div>
+        <span id="q-score"></span>
+      </div>
+
+      <div class="quiz">
+        <div class="viewer-wrap">
+          <div class="toolbar">
+            <div class="seg" id="seg-mode" role="group">
+              <button type="button" data-mode="swipe" class="on" data-i18n="modeSwipe"></button>
+              <button type="button" data-mode="side" data-i18n="modeSide"></button>
+            </div>
+            <div class="seg" id="seg-band" role="group">
+              <button type="button" data-band="tc" class="on" data-i18n="bandTc"></button>
+              <button type="button" data-band="fc" data-i18n="bandFc"></button>
+            </div>
+            <div class="seg" id="seg-after" role="group">
+              <button type="button" data-after="after" class="on" data-i18n="afterShort"></button>
+              <button type="button" data-after="later" data-i18n="afterLater"></button>
+            </div>
+            <div class="seg" id="seg-zoom" role="group">
+              <button type="button" data-zoom="out" aria-label="Zoom out">&minus;</button>
+              <button type="button" data-zoom="reset" id="btn-zoom-reset">1:1</button>
+              <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+            </div>
+          </div>
+
+          <div id="viewer" class="viewer mode-swipe">
+            <figure class="pane pane-a">
+              <div class="zoomwrap"><img id="img-a" alt="" draggable="false"><div class="hl"></div></div>
+              <figcaption class="tag tag-l"><b data-i18n="before"></b> <span id="date-a"></span></figcaption>
+            </figure>
+            <figure class="pane pane-b">
+              <div class="zoomwrap"><img id="img-b" alt="" draggable="false"><div class="hl"></div></div>
+              <figcaption class="tag tag-r"><b id="lbl-b"></b> <span id="date-b"></span></figcaption>
+            </figure>
+            <div class="handle" id="handle"><span></span></div>
+            <div class="scalebar" id="scalebar"><span></span><em></em></div>
+          </div>
+          <p class="hint small" id="viewer-hint"></p>
+
+          <dl class="locinfo card" id="locinfo">
+            <div class="loc-coord">
+              <dt data-i18n="coordinates"></dt>
+              <dd><code id="loc-coord"></code> <button type="button" class="copybtn" id="btn-copy" data-i18n="copy"></button></dd>
+            </div>
+            <div><dt data-i18n="country"></dt><dd id="loc-country"></dd></div>
+            <div><dt data-i18n="state"></dt><dd id="loc-state"></dd></div>
+            <div><dt data-i18n="municipality"></dt><dd id="loc-muni"></dd></div>
+            <div><dt data-i18n="forestType"></dt><dd id="loc-forest"></dd></div>
+          </dl>
+        </div>
+
+        <div class="answer card">
+          <h2 data-i18n="question"></h2>
+          <p class="small hl-note hidden" id="hl-note" data-i18n="lookInBox"></p>
+          <div id="choices" class="choices"></div>
+          <div class="row answer-btns" id="answer-btns">
+            <button class="btn primary" id="btn-sure" type="button" disabled data-i18n="answerSure"></button>
+            <button class="btn primary alt" id="btn-guess" type="button" disabled data-i18n="answerGuess"></button>
+          </div>
+          <p class="small answer-hint" id="answer-hint" data-i18n="answerHint"></p>
+          <div class="row answered hidden" id="answered-row">
+            <button class="btn wide" id="btn-show-fb" type="button" data-i18n="showFeedback"></button>
+            <button class="btn primary wide" id="btn-next2" type="button"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- end -->
+    <section id="screen-end" class="screen hidden">
+      <p class="kicker" data-i18n="endKicker"></p>
+      <h1 id="end-score"></h1>
+      <p class="lead" id="end-msg"></p>
+      <p id="send-status" class="card small"></p>
+      <div class="grid2">
+        <div class="card">
+          <h2 data-i18n="byClass"></h2>
+          <div id="by-class"></div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="confidence"></h2>
+          <div id="calib"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2 data-i18n="mixups"></h2>
+        <div class="table-scroll"><table id="matrix"></table></div>
+        <p class="small" data-i18n="mixupsHelp"></p>
+      </div>
+      <div class="card">
+        <h2 data-i18n="review"></h2>
+        <ol id="review-list" class="review"></ol>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="btn-end-class" type="button" data-i18n="seeClassRanking"></button>
+        <button class="btn" id="btn-download" type="button" data-i18n="download"></button>
+        <button class="btn" id="btn-again" type="button" data-i18n="again"></button>
+      </div>
+    </section>
+
+    <!-- class results -->
+    <section id="screen-class" class="screen hidden">
+      <p class="kicker" data-i18n="classKicker"></p>
+      <h1 data-i18n="classResults"></h1>
+      <div class="row card class-pick">
+        <label><span data-i18n="classLbl"></span> <select id="cv-class"></select></label>
+        <button class="btn" id="btn-cv-refresh" type="button" data-i18n="refresh"></button>
+        <button class="btn" id="btn-cv-back" type="button" data-i18n="back"></button>
+      </div>
+      <p id="cv-status" class="small"></p>
+      <div id="cv-body" class="hidden">
+        <div class="stats" id="cv-stats"></div>
+        <div class="grid2">
+          <div class="card">
+            <h2 data-i18n="ranking"></h2>
+            <div class="table-scroll"><table id="cv-rank" class="rank"></table></div>
+          </div>
+          <div class="card">
+            <h2 data-i18n="byClassAll"></h2>
+            <div id="cv-byclass"></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="hardest"></h2>
+          <ol id="cv-hard" class="review"></ol>
+        </div>
+        <div class="card">
+          <h2 data-i18n="mixupsAll"></h2>
+          <div class="table-scroll"><table id="cv-matrix"></table></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- feedback popup -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="fb-verdict">
+    <div class="modal-card" tabindex="-1">
+      <div id="step-fb">
+        <p class="verdict" id="fb-verdict"></p>
+        <div id="fb-body"></div>
+        <div class="where">
+          <div id="minimap"></div>
+          <div>
+            <p id="fb-place" class="small"></p>
+            <a id="fb-gmaps" target="_blank" rel="noopener" data-i18n="gmaps"></a>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn" id="btn-close" type="button" data-i18n="lookAgain"></button>
+          <button class="btn primary" id="btn-next" type="button"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot small">
+    <span data-i18n="credits"></span>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="config.js?v=3"></script>
+  <script src="sites_data.js?v=3"></script>
+  <script src="content.js?v=3"></script>
+  <script src="game.js?v=3"></script>
+</body>
+</html>
