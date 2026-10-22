@@ -62,8 +62,8 @@
     };
     opts($("#in-class"), true);
     opts($("#cv-class"), true);
-    // default to the newest class session; "no class" stays available for practice
-    $("#in-class").value = state.group || (CLASSES[0] ? CLASSES[0].id : "");
+    // default to "no class (just practising)"; students pick their class session from the list
+    $("#in-class").value = state.group || "";
   }
 
   // ---------- screens ----------
