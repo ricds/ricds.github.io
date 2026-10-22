@@ -210,6 +210,14 @@ input, select {
 .btn.primary.alt { background: var(--copper); }
 .answer-hint { margin-top: 6px; }
 .class-link { margin-top: 4px; }
+.add-group-wrap { margin: 28px 0 0; }
+.linkbtn.subtle { color: var(--ink-2); font-size: 0.78rem; opacity: 0.7; }
+.linkbtn.subtle:hover { opacity: 1; }
+.warn {
+  background: color-mix(in srgb, var(--copper) 14%, transparent); border-left: 4px solid var(--copper);
+  padding: 10px 12px; border-radius: 8px; margin: 8px 0 14px;
+}
+#ag-link { font-family: ui-monospace, Consolas, monospace; font-size: 0.85rem; background: var(--mist); padding: 2px 8px; border-radius: 6px; word-break: break-all; user-select: all; }
 .btn.ghost { background: transparent; border-color: transparent; color: var(--ink-2); }
 body.noscroll { overflow: hidden; }
 .verdict { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; margin-bottom: 6px; }

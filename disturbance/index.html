@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="game.css?v=5">
+  <link rel="stylesheet" href="game.css?v=6">
 </head>
 <body>
   <header class="top">
@@ -44,6 +44,9 @@
         <label><span data-i18n="email"></span>
           <input id="in-email" name="email" type="email" required maxlength="120" autocomplete="email">
         </label>
+        <label><span data-i18n="org"></span>
+          <input id="in-org" name="organization" required maxlength="120" autocomplete="organization">
+        </label>
         <label><span data-i18n="classLbl"></span>
           <select id="in-class" name="class"></select>
         </label>
@@ -53,6 +56,7 @@
         </div>
         <p class="small" data-i18n="privacy"></p>
       </form>
+      <p class="add-group-wrap"><button type="button" class="linkbtn subtle" id="btn-add-group" data-i18n="addGroup"></button></p>
       <div id="resume" class="card hidden">
         <p data-i18n="resumeText"></p>
         <div class="row">
@@ -214,6 +218,30 @@
     </section>
   </main>
 
+  <!-- add-group popup -->
+  <div id="modal-group" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="ag-title">
+    <form class="modal-card" id="ag-form" onsubmit="event.preventDefault()">
+      <h2 id="ag-title" data-i18n="addGroupTitle"></h2>
+      <p class="warn" data-i18n="addGroupWarn"></p>
+      <div id="ag-step-form" class="form">
+        <label><span data-i18n="addGroupName"></span>
+          <input id="ag-name" required maxlength="60" placeholder="">
+        </label>
+        <p class="small" data-i18n="addGroupHelp"></p>
+        <div class="row">
+          <button class="btn primary" type="submit" id="ag-create" data-i18n="addGroupCreate"></button>
+          <button class="btn ghost" type="button" id="ag-cancel" data-i18n="cancel"></button>
+        </div>
+        <p class="small" id="ag-status"></p>
+      </div>
+      <div id="ag-step-done" class="hidden">
+        <p id="ag-done-msg"></p>
+        <p><code id="ag-link"></code> <button type="button" class="copybtn" id="ag-copy" data-i18n="copy"></button></p>
+        <div class="row"><button class="btn primary" type="button" id="ag-close" data-i18n="ok"></button></div>
+      </div>
+    </form>
+  </div>
+
   <!-- feedback popup -->
   <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="fb-verdict">
     <div class="modal-card" tabindex="-1">
@@ -240,9 +268,9 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="config.js?v=5"></script>
-  <script src="sites_data.js?v=5"></script>
-  <script src="content.js?v=5"></script>
-  <script src="game.js?v=5"></script>
+  <script src="config.js?v=6"></script>
+  <script src="sites_data.js?v=6"></script>
+  <script src="content.js?v=6"></script>
+  <script src="game.js?v=6"></script>
 </body>
 </html>

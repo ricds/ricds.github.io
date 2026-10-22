@@ -80,6 +80,27 @@ window.CONTENT = {
     },
     name: { en: "Your name", pt: "Seu nome" },
     email: { en: "Your email", pt: "Seu e-mail" },
+    org: { en: "Organisation / institute / company", pt: "Organização / instituto / empresa" },
+    addGroup: { en: "+ Add group", pt: "+ Adicionar grupo" },
+    addGroupTitle: { en: "Add a group", pt: "Adicionar grupo" },
+    addGroupWarn: {
+      en: "With this you are creating a new group for running an activity (for example, a class or a workshop). It will appear in the list for everyone, and its students' results will be grouped together in their own ranking. If you only want to play, close this window.",
+      pt: "Com este comando você estará criando um novo grupo para a realização de atividades (por exemplo, uma aula ou um curso). Ele aparecerá na lista para todos, e os resultados dos alunos ficarão reunidos em um ranking próprio. Se você só quer jogar, feche esta janela.",
+    },
+    addGroupName: { en: "Group name", pt: "Nome do grupo" },
+    addGroupHelp: {
+      en: "For example: \"Forest Remote Sensing - INPE - March 2027\". The creation date is added automatically.",
+      pt: "Por exemplo: \"Sensoriamento Remoto Florestal - INPE - março 2027\". A data de criação é adicionada automaticamente.",
+    },
+    addGroupCreate: { en: "Create group", pt: "Criar grupo" },
+    addGroupShort: { en: "Please write a name with at least 3 characters.", pt: "Escreva um nome com pelo menos 3 caracteres." },
+    addGroupFail: { en: "Could not create the group. Try again in a moment.", pt: "Não foi possível criar o grupo. Tente de novo daqui a pouco." },
+    addGroupDone: {
+      en: "Group \"{name}\" created and selected. Share this link with the students - it opens the game with the group already chosen:",
+      pt: "Grupo \"{name}\" criado e selecionado. Compartilhe este link com os alunos - ele abre o jogo com o grupo já escolhido:",
+    },
+    cancel: { en: "Cancel", pt: "Cancelar" },
+    ok: { en: "OK", pt: "OK" },
     start: { en: "Start", pt: "Começar" },
     privacy: {
       en: "Your name, email and answers are sent only to you and to the instructor.",

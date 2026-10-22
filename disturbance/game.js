@@ -5,18 +5,24 @@
   const C = window.CONTENT;
   const SITES = C.sites;
   const CFG = window.GAME_CONFIG || {};
-  const CLASSES = CFG.classes || [];
+  // class sessions: the fixed ones from config.js plus the groups created on the page
+  // ("Add group"), which live in the results service and are loaded at start-up
+  let CLASSES = (CFG.classes || []).slice();
   const QS = new URLSearchParams(location.search);
   // ?review=1: instructor mode - arrow keys move between images without answering, the
   // answer can be shown at any time, nothing is sent; kept apart from a real game's storage
   const REVIEW = QS.get("review") === "1";
   const KEY = REVIEW ? "disturbanceGame.v2.review" : "disturbanceGame.v2";
+  // a group's own link (?class=<id>) preselects that group on the start page
+  const LINK_GROUP = QS.get("view") === "class" ? "" : (QS.get("class") || "");
+  let PENDING_CV = null;  // class asked for on the class page before the groups have loaded
   const CLASS_IDS = C.classes.map((c) => c.id);
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => Array.from(document.querySelectorAll(s));
 
   // ---------- state ----------
-  const fresh = () => ({ lang: "en", name: "", email: "", group: "", idx: 0, answers: [], sent: false, startedAt: null });
+  const fresh = () => ({ lang: "en", name: "", email: "", org: "", group: "", idx: 0, answers: [], sent: false, startedAt: null });
+  const who = () => ({ lang: state.lang, name: state.name, email: state.email, org: state.org, group: state.group });
   let state = load() || fresh();
   let view = { mode: "swipe", band: "tc", after: "after", choice: null, x: 50, z: { s: 1, tx: 0, ty: 0 } };
 
@@ -62,8 +68,27 @@
     };
     opts($("#in-class"), true);
     opts($("#cv-class"), true);
-    // default to "no class (just practising)"; students pick their class session from the list
-    $("#in-class").value = state.group || "";
+    // default to "no class (just practising)"; a group link (?class=<id>) preselects its group
+    const want = LINK_GROUP || state.group || "";
+    $("#in-class").value = CLASSES.some((c) => c.id === want) ? want : "";
+  }
+
+  async function loadGroups() {
+    if (!CFG.submitUrl) return;
+    try {
+      const r = await fetch(`${CFG.submitUrl}?action=groups`);
+      const js = await r.json();
+      if (!js.ok || !Array.isArray(js.groups)) return;
+      const known = new Set(CLASSES.map((c) => c.id));
+      // newest groups first, above the fixed ones
+      const added = js.groups.filter((g) => g.id && !known.has(g.id)).map((g) => ({ id: g.id, label: g.label || g.id }));
+      CLASSES = added.reverse().concat(CLASSES);
+      fillClassSelects();
+      if (!$("#screen-class").classList.contains("hidden") && PENDING_CV && $("#cv-class").value !== PENDING_CV) {
+        $("#cv-class").value = PENDING_CV;
+        loadClass();
+      }
+    } catch (e) { /* the fixed classes still work */ }
   }
 
   // ---------- screens ----------
@@ -76,6 +101,7 @@
   function initStart() {
     $("#in-name").value = state.name || "";
     $("#in-email").value = state.email || "";
+    $("#in-org").value = state.org || "";
     const inProgress = state.answers.length > 0 && state.answers.length < SITES.length;
     const done = state.answers.length >= SITES.length;
     $("#resume").classList.toggle("hidden", !(inProgress || done));
@@ -87,14 +113,14 @@
   $("#start-form").addEventListener("submit", () => {
     state = Object.assign(fresh(), {
       lang: state.lang, name: $("#in-name").value.trim(), email: $("#in-email").value.trim(),
-      group: $("#in-class").value, startedAt: new Date().toISOString(),
+      org: $("#in-org").value.trim(), group: $("#in-class").value, startedAt: new Date().toISOString(),
     });
     save();
     startQuiz();
   });
   $("#btn-resume").addEventListener("click", () => (state.answers.length >= SITES.length ? finish() : startQuiz()));
   $("#btn-restart").addEventListener("click", () => {
-    state = Object.assign(fresh(), { lang: state.lang, name: state.name, email: state.email, group: state.group });
+    state = Object.assign(fresh(), who());
     save();
     initStart();
   });
@@ -441,6 +467,7 @@
 
   document.addEventListener("keydown", (e) => {
     if (["INPUT", "SELECT"].includes(e.target.tagName)) return;
+    if (!$("#modal-group").classList.contains("hidden")) { if (e.key === "Escape") closeAddGroup(); return; }
     const modalOpen = !$("#modal").classList.contains("hidden");
     if (e.key === "Escape" && modalOpen) return closeModal();
     if ($("#screen-quiz").classList.contains("hidden")) return;
@@ -514,7 +541,8 @@
 
   function payload() {
     return {
-      name: state.name, email: state.email, group: state.group, groupLabel: state.group ? groupLabel(state.group) : "",
+      name: state.name, email: state.email, org: state.org || "", group: state.group,
+      groupLabel: state.group ? groupLabel(state.group) : "",
       lang: state.lang, score: score(), total: state.answers.length,
       startedAt: state.startedAt, finishedAt: new Date().toISOString(),
       answers: state.answers.map((a, i) => {
@@ -548,6 +576,7 @@
   $("#btn-download").addEventListener("click", () => {
     const p = payload();
     const lines = [ui("title"), `${p.name} <${p.email}>`];
+    if (p.org) lines.push(`${ui("org")}: ${p.org}`);
     if (p.group) lines.push(`${ui("classLbl")}: ${groupLabel(p.group)}`);
     lines.push(fmt(ui("endScore"), { s: p.score, n: p.total }), "");
     p.answers.forEach((a) => lines.push(
@@ -563,7 +592,7 @@
 
   $("#btn-again").addEventListener("click", () => {
     if (!confirm(ui("againConfirm"))) return;
-    state = Object.assign(fresh(), { lang: state.lang, name: state.name, email: state.email, group: state.group, startedAt: new Date().toISOString() });
+    state = Object.assign(fresh(), who(), { startedAt: new Date().toISOString() });
     save();
     startQuiz();
   });
@@ -577,8 +606,63 @@
     if (returnTo === "#screen-class") returnTo = "#screen-start";
     show("#screen-class");
     $("#cv-class").value = group != null ? group : (CLASSES[0] ? CLASSES[0].id : "");
+    PENDING_CV = group || null;
     loadClass();
   }
+
+  // ---------- add a group (class session) from the page ----------
+  // Low-key link under the start form; the popup warns that this creates a group for an
+  // activity, and gives back the group's own link to share with its students.
+  function openAddGroup() {
+    $("#ag-step-form").classList.remove("hidden");
+    $("#ag-step-done").classList.add("hidden");
+    $("#ag-status").textContent = "";
+    $("#ag-name").value = "";
+    $("#ag-create").disabled = false;
+    $("#modal-group").classList.remove("hidden");
+    document.body.classList.add("noscroll");
+    $("#ag-name").focus();
+  }
+  function closeAddGroup() {
+    $("#modal-group").classList.add("hidden");
+    document.body.classList.remove("noscroll");
+  }
+  const groupLink = (id) => `${location.origin}${location.pathname}?class=${encodeURIComponent(id)}${state.lang === "pt" ? "&lang=pt" : ""}`;
+
+  $("#btn-add-group").addEventListener("click", openAddGroup);
+  $("#ag-cancel").addEventListener("click", closeAddGroup);
+  $("#ag-close").addEventListener("click", closeAddGroup);
+  $("#ag-copy").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText($("#ag-link").textContent); } catch (e) { /* the link stays selectable */ }
+    $("#ag-copy").textContent = ui("copied");
+  });
+  $("#ag-form").addEventListener("submit", async () => {
+    const label = $("#ag-name").value.trim();
+    if (label.length < 3) { $("#ag-status").textContent = ui("addGroupShort"); return; }
+    if (!CFG.submitUrl) { $("#ag-status").textContent = ui("sendOff"); return; }
+    $("#ag-create").disabled = true;
+    $("#ag-status").textContent = ui("loading");
+    try {
+      const r = await fetch(CFG.submitUrl, {
+        method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "addGroup", label }),
+      });
+      const js = await r.json();
+      if (!js.ok || !js.group) throw new Error(js.error || "failed");
+      const g = js.group;
+      if (!CLASSES.some((c) => c.id === g.id)) CLASSES.unshift({ id: g.id, label: g.label });
+      fillClassSelects();
+      $("#in-class").value = g.id;
+      $("#ag-done-msg").textContent = fmt(ui("addGroupDone"), { name: g.label });
+      $("#ag-link").textContent = groupLink(g.id);
+      $("#ag-copy").textContent = ui("copy");
+      $("#ag-step-form").classList.add("hidden");
+      $("#ag-step-done").classList.remove("hidden");
+    } catch (e) {
+      $("#ag-status").textContent = ui("addGroupFail");
+      $("#ag-create").disabled = false;
+    }
+  });
   $("#btn-class-view").addEventListener("click", () => openClassView($("#in-class").value));
   $("#btn-start-class").addEventListener("click", () => openClassView($("#in-class").value));
   $("#btn-end-class").addEventListener("click", () => openClassView(state.group));
@@ -697,4 +781,5 @@
     show("#screen-quiz");
     renderQuestion();
   } else initStart();
+  loadGroups();
 })();
