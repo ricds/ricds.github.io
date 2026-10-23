@@ -8,8 +8,8 @@ needs a server lives in **one Google Apps Script bound to a Google Sheet** (`Cod
 | Store each finished game | one row in the Sheet's **results** tab |
 | Email the result | to the student, instructor (`TEACHER_EMAIL` in `Code.gs`) on BCC |
 | Class ranking page | `GET <web app>?action=class&group=<id>` (names + scores, never emails) |
-| Groups ("+ Add group") | stored in the **groups** tab; `GET ?action=groups`, `POST {action:"addGroup"}` |
-| Clean up | menu **Disturbance game** inside the Sheet (owner only) |
+| Groups ("+ Add group") | stored in the **groups** tab; `GET ?action=groups`, `POST {action:"addGroup", label, instructor}` |
+| Clean up / fix | menu **Disturbance game** inside the Sheet (owner only), see below |
 
 No cost: Apps Script on a personal Google account has no billing.
 
@@ -37,7 +37,23 @@ No cost: Apps Script on a personal Google account has no billing.
 
 Paste the new code, save, then **Deploy > Manage deployments > (pencil) > Version: New version
 > Deploy**. The URL stays the same. Without a new version the web app keeps running the old
-code (the Sheet menu, `onOpen`, uses the saved code directly).
+code (the Sheet menu, `onOpen`, uses the saved code directly, so a change that only touches
+the menu works after Save + reloading the Sheet; anything in `doGet`/`doPost` needs the new
+version). Always paste the **whole** file: the latest copy is this folder's `Code.gs`
+(raw: https://raw.githubusercontent.com/ricds/ricds.github.io/main/disturbance/backend/Code.gs).
+
+## Sheet menu "Disturbance game"
+
+Appears when the Sheet is opened (owner only; the first use asks for authorization).
+
+- **Limpar "Sem turma" (practice)** - deletes all results with no group, after confirming.
+- **Limpar uma turma...** - asks for a group id (column `id` of **groups**) and deletes its
+  results, after confirming.
+- **Mover "Sem turma" de hoje para um grupo...** - for students who forgot to pick the group:
+  asks for a group name, creates that group with exactly that name if it does not exist
+  (no date added, no instructor - fill the `instructor` cell by hand), lists today's "no
+  group" results and, after confirming, moves them into the group. Shows the group link and
+  ranking link at the end. "Today" is the script's time zone (File > Project settings).
 
 ## Sheet layout
 
@@ -46,15 +62,21 @@ code (the Sheet menu, `onOpen`, uses the saved code directly).
   rows are written by column name). `group` is empty for "no class (just practising)".
   `answers_json` holds all 30 answers (site id, place, lat/lon, right answer, chosen answer,
   correct, sure/guessing).
-- **groups**: `created, id, label`. Rows come from "+ Add group" on the page; the label gets
-  the creation date; the id looks like `2026-10-23-sensoriamento-remoto-ab12`. Delete a row to
-  remove a group from the list (its results stay in **results**).
+- **groups**: `created, id, label, instructor` (read by column name, any order; a missing
+  column is added to the header automatically). Rows come from "+ Add group" on the page,
+  which asks for the group name and the instructor's name; the label gets the creation date;
+  the id looks like `2026-10-23-sensoriamento-remoto-ab12`. The instructor is shown on the
+  class results page ("Instructor: ..."); "no class" has none. Edit a cell to fix a name;
+  delete a row to remove a group from the list (its results stay in **results**).
 
 ## Using it in class
 
-- Create the group on the page (**+ Add group**, under the start form) and share the link it
-  gives (`.../disturbance/?class=<id>`), which opens the game with the group preselected.
+- Create the group on the page (**+ Add group**, under the start form: group name +
+  instructor) and share the link it gives (`.../disturbance/?class=<id>`), which opens the
+  game with the group preselected. The start page otherwise defaults to "no class".
 - Project the ranking: `.../disturbance/?view=class&class=<id>` (refreshes itself every 30 s).
+  On the class page the address bar always shows this link, ready to copy. A hidden
+  **Review** link (background colour, centred at the very bottom) opens review mode.
 - Only each email's **first** finished game in a group counts in the ranking.
 - Clean test games: Sheet menu **Disturbance game > Limpar "Sem turma"** or **Limpar uma
   turma...** (asks for the group id, column B of **groups**).
