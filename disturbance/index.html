@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="game.css?v=16">
+  <link rel="stylesheet" href="game.css?v=17">
 </head>
 <body>
   <header class="top">
@@ -26,11 +26,14 @@
   <main id="app">
     <!-- start -->
     <section id="screen-start" class="screen">
-      <div class="start-grid">
-        <div>
-          <p class="kicker" data-i18n="kicker"></p>
-          <h1 data-i18n="title"></h1>
-          <p class="lead" data-i18n="intro"></p>
+      <div class="intro-top">
+        <p class="kicker" data-i18n="kicker"></p>
+        <h1 data-i18n="title"></h1>
+        <p class="lead" data-i18n="intro"></p>
+      </div>
+      <!-- form and picture share one row: same top and bottom edges -->
+      <div class="start-row">
+        <div class="start-col">
       <form id="start-form" class="card form" autocomplete="on" onsubmit="event.preventDefault()">
         <label><span data-i18n="name"></span>
           <input id="in-name" name="name" required maxlength="80" autocomplete="name">
@@ -60,8 +63,10 @@
       </div>
         </div>
         <figure class="hero">
-          <img src="img/hero.jpg" alt="" id="hero-img">
-          <figcaption class="small" data-i18n="heroCaption"></figcaption>
+          <div class="hero-frame">
+            <img src="img/hero.jpg" alt="" id="hero-img">
+            <figcaption class="small" data-i18n="heroCaption"></figcaption>
+          </div>
         </figure>
       </div>
       <!-- how to play: below the form and the picture -->
@@ -283,9 +288,9 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="config.js?v=16"></script>
-  <script src="sites_data.js?v=16"></script>
-  <script src="content.js?v=16"></script>
-  <script src="game.js?v=16"></script>
+  <script src="config.js?v=17"></script>
+  <script src="sites_data.js?v=17"></script>
+  <script src="content.js?v=17"></script>
+  <script src="game.js?v=17"></script>
 </body>
 </html>

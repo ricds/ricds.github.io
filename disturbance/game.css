@@ -62,15 +62,22 @@ main { flex: 1; width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px 
 .form label { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; font-weight: 500; min-width: 0; }
 /* a select is as wide as its longest option; keep every field inside the card */
 .form input, .form select { width: 100%; max-width: 100%; min-width: 0; text-overflow: ellipsis; }
-.start-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 1fr); gap: 28px; align-items: start; margin-bottom: 8px; }
-@media (max-width: 860px) { .start-grid { grid-template-columns: 1fr; } }
+/* start page: title and intro on top; form and picture as one row with the same top and
+   bottom edges (the picture is cropped to the form's height, caption over its foot) */
+.intro-top { margin-bottom: 18px; }
+.intro-top h1 { margin-bottom: 0.25em; }
+.start-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: stretch; }
+.start-row .form { max-width: none; margin-bottom: 0; height: 100%; }
+@media (max-width: 860px) { .start-row { grid-template-columns: 1fr; } }
 /* how-to-play list under the form and the picture: two columns on wide screens */
 .howto-below { max-width: none; margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); }
 .howto-below li { break-inside: avoid; }
 @media (min-width: 861px) { .howto-below { columns: 2; column-gap: 44px; } }
-.hero { margin: 0; }
-.hero img { width: 100%; display: block; border-radius: var(--radius); box-shadow: var(--shadow); aspect-ratio: 1 / 1; object-fit: cover; }
-.hero figcaption { margin-top: 6px; }
+.hero { margin: 0; display: flex; }
+.hero-frame { position: relative; flex: 1; min-height: 300px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.hero img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+.hero figcaption { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; padding: 8px 14px; color: #fff; background: rgba(0, 0, 0, 0.55); }
+@media (max-width: 860px) { .hero-frame { min-height: 0; aspect-ratio: 1 / 1; } }
 .row-tight { display: flex; align-items: center; gap: 12px; }
 .linkbtn { font: inherit; font-size: 0.9rem; cursor: pointer; background: none; border: 0; color: var(--forest); text-decoration: underline; padding: 0; }
 .class-pick { align-items: center; }
