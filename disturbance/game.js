@@ -61,6 +61,8 @@
     $$(".lang button").forEach((b) => b.classList.toggle("on", b.dataset.lang === state.lang));
     $$("[data-i18n]").forEach((el) => { el.textContent = ui(el.dataset.i18n); });
     $("#btn-zoom-reset").title = $("#btn-zoom-reset").ariaLabel = ui("zoomReset");
+    $("#seg-band [data-band=tc]").title = ui("tcTip");
+    $("#seg-band [data-band=fc]").title = ui("fcTip");
     $("#review-link").href = "?review=1" + (state.lang === "pt" ? "&lang=pt" : "");
     $("#btn-resume").textContent = ui(state.answers.length >= SITES.length ? "seeResults" : "resume");
     document.title = ui("title");

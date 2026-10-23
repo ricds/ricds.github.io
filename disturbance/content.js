@@ -6,16 +6,16 @@ window.CONTENT = {
     kicker: { en: "Forest disturbance interpretation", pt: "Interpretação de distúrbios florestais" },
     title: { en: "Forest Disturbance Game", pt: "Jogo dos Distúrbios Florestais" },
     intro: {
-      en: "30 places around the world, each seen by Sentinel-2 before and after something happened - or nothing at all. Decide what changed the forest.",
-      pt: "30 lugares ao redor do mundo, cada um visto pelo Sentinel-2 antes e depois de algo acontecer - ou de nada acontecer. Decida o que mudou a floresta.",
+      en: "30 places around the world, seen from space by the Sentinel-2 satellite of the European Space Agency, before and after something happened - or nothing at all. Compare the images and decide what changed the forest.",
+      pt: "30 lugares ao redor do mundo, vistos do espaço pelo satélite Sentinel-2, da Agência Espacial Europeia, antes e depois de algo acontecer - ou de nada acontecer. Compare as imagens e decida o que mudou na floresta.",
     },
     howto1: {
       en: "Drag the divider to swipe between the before and after scenes, or view them side by side. Scroll or pinch to zoom in, and drag to move around.",
       pt: "Arraste a divisória para alternar entre antes e depois, ou veja lado a lado. Use a roda do mouse ou o gesto de pinça para aproximar e arraste para navegar.",
     },
     heroCaption: {
-      en: "Smoke plumes from fires burning in the Pantanal, Brazil, on 18 September 2020, along the Paraguay River. Sentinel-2 false colour: fresh burns are red, vegetation green, water dark.",
-      pt: "Plumas de fumaça de incêndios no Pantanal, Brasil, em 18 de setembro de 2020, ao longo do rio Paraguai. Sentinel-2 em falsa-cor: queimadas recentes em vermelho, vegetação em verde, água escura.",
+      en: "Smoke from fires in the Pantanal, Brazil, on 18 September 2020, along the Paraguay River. Sentinel-2 satellite image in false colour (with infrared): fresh burns are red, vegetation green, water dark.",
+      pt: "Fumaça de incêndios no Pantanal, Brasil, em 18 de setembro de 2020, ao longo do rio Paraguai. Imagem do satélite Sentinel-2 em falsa-cor (com infravermelho): queimadas recentes em vermelho, vegetação em verde, água escura.",
     },
     classLbl: { en: "Class", pt: "Turma" },
     noClass: { en: "No class (just practising)", pt: "Sem turma (só praticando)" },
@@ -67,9 +67,11 @@ window.CONTENT = {
     },
     lookAgain: { en: "Look at the images again", pt: "Ver as imagens de novo" },
     howto2: {
-      en: "Switch to false colour (shortwave infrared, near infrared, red): vegetation is green, bare soil pink, fresh burns deep red, water black.",
-      pt: "Mude para falsa-cor (infravermelho de ondas curtas, infravermelho próximo, vermelho): vegetação fica verde, solo exposto rosa, queimadas recentes vermelho-escuro, água preta.",
+      en: "Try the False colour button: it shows light our eyes can't see (infrared). With it, vegetation looks bright green, bare soil pink, fresh burns deep red and water black.",
+      pt: "Experimente o botão Falsa-cor: ele mostra luz que nossos olhos não enxergam (infravermelho). Com ele a vegetação aparece verde-viva, o solo exposto rosa, as queimadas recentes vermelho-escuro e a água preta.",
     },
+    tcTip: { en: "As the human eye would see it", pt: "Como o olho humano veria" },
+    fcTip: { en: "Includes infrared: highlights vegetation, bare soil and burns", pt: "Inclui infravermelho: destaca vegetação, solo exposto e queimadas" },
     howto3: {
       en: "Look at the image one year later too - what happens next is often the best clue.",
       pt: "Veja também a imagem um ano depois - o que acontece em seguida costuma ser a melhor pista.",
@@ -243,8 +245,8 @@ window.CONTENT = {
       name: { en: "Fire", pt: "Fogo" },
       def: { en: "Forest burned (degradation, unless the land is cleared afterwards)", pt: "Floresta queimada (degradação, a menos que a área seja desmatada depois)" },
       clues: {
-        en: "Large, irregular patches that ignore property lines and often stop at rivers, roads or moist valleys. Fresh burns are dark brown or black in true colour and deep red to magenta in false colour, because burned surfaces reflect little near infrared and much shortwave infrared. Understory fires in tropical forest are subtler: the canopy turns browner and thinner, with a visible front between burned and unburned forest. Burned forest greens up within one or two years unless it is cleared.",
-        pt: "Manchas grandes e irregulares que ignoram os limites de propriedade e costumam parar em rios, estradas ou vales úmidos. Queimadas recentes ficam marrom-escuras ou pretas em cor verdadeira e vermelho-escuras a magenta na falsa-cor, porque superfícies queimadas refletem pouco infravermelho próximo e muito infravermelho de ondas curtas. Incêndios de sub-bosque em floresta tropical são mais sutis: o dossel fica mais marrom e mais ralo, com uma frente visível entre a floresta queimada e a não queimada. A floresta queimada volta a ficar verde em um ou dois anos, a menos que seja desmatada.",
+        en: "Large, irregular patches that ignore property lines and often stop at rivers, roads or moist valleys. Fresh burns are dark brown or black in true colour and deep red to magenta in false colour, because burned areas reflect infrared light differently from vegetation, and false colour shows that light. Understory fires in tropical forest are subtler: the canopy turns browner and thinner, with a visible front between burned and unburned forest. Burned forest greens up within one or two years unless it is cleared.",
+        pt: "Manchas grandes e irregulares que ignoram os limites de propriedade e costumam parar em rios, estradas ou vales úmidos. Queimadas recentes ficam marrom-escuras ou pretas em cor verdadeira e vermelho-escuras a magenta na falsa-cor, porque áreas queimadas refletem de forma diferente da vegetação na luz infravermelha, que a falsa-cor mostra. Incêndios de sub-bosque em floresta tropical são mais sutis: o dossel fica mais marrom e mais ralo, com uma frente visível entre a floresta queimada e a não queimada. A floresta queimada volta a ficar verde em um ou dois anos, a menos que seja desmatada.",
       },
       trap: {
         en: "Fire scars are large and irregular, dark in true colour and deep red in false colour, and they spread across the landscape regardless of property lines, usually stopping at rivers, roads or wet ground. This change does not have that signature.",
