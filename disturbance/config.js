@@ -4,12 +4,11 @@
    analysis repo). Empty = sending and class rankings are off.
    Add ?local=1 to the page address on this computer to use the local test server instead
    (disturbance_game/serve.py: stores in E:/disturbance_game/local_results.jsonl, no email).
-   classes = what students can pick on the start page; results are grouped by id. Add one
-   line per class session; the newest first. */
+   classes = fixed groups always offered on the start page (results are grouped by id).
+   Normally empty: groups are created on the page with "+ Add group" and stored in the
+   "groups" tab of the results Sheet. */
 window.GAME_CONFIG = {
   submitUrl: "https://script.google.com/macros/s/AKfycbx94og1TT8PTarF5ZabjzhO_Xyk37QrnMhp7TnMa1Aykk2dMWUSNn9obdcMa8UUimgy/exec",
-  classes: [
-    { id: "2026-10-23", label: { en: "Class of 23 October 2026", pt: "Aula de 23 de outubro de 2026" } },
-  ],
+  classes: [],
 };
 if (new URLSearchParams(location.search).get("local") === "1") window.GAME_CONFIG.submitUrl = "/api/results";
