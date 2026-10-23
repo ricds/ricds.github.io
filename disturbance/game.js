@@ -58,6 +58,7 @@
     if (!$("#modal").classList.contains("hidden") && answered()) renderFeedback(answered());
     if (!$("#screen-end").classList.contains("hidden")) renderEnd();
     if (!$("#screen-class").classList.contains("hidden") && classData) renderClass(classData);
+    if (!$("#screen-class").classList.contains("hidden")) showInstructor();
   }
 
   function fillClassSelects() {
@@ -82,9 +83,11 @@
       if (!js.ok || !Array.isArray(js.groups)) return;
       const known = new Set(CLASSES.map((c) => c.id));
       // newest groups first, above the fixed ones
-      const added = js.groups.filter((g) => g.id && !known.has(g.id)).map((g) => ({ id: g.id, label: g.label || g.id }));
+      const added = js.groups.filter((g) => g.id && !known.has(g.id))
+        .map((g) => ({ id: g.id, label: g.label || g.id, instructor: g.instructor || "" }));
       CLASSES = added.reverse().concat(CLASSES);
       fillClassSelects();
+      showInstructor();
       if (!$("#screen-class").classList.contains("hidden") && PENDING_CV && $("#cv-class").value !== PENDING_CV) {
         $("#cv-class").value = PENDING_CV;
         loadClass();
@@ -619,6 +622,7 @@
     $("#ag-step-done").classList.add("hidden");
     $("#ag-status").textContent = "";
     $("#ag-name").value = "";
+    $("#ag-instructor").value = "";
     $("#ag-create").disabled = false;
     $("#modal-group").classList.remove("hidden");
     document.body.classList.add("noscroll");
@@ -639,19 +643,21 @@
   });
   $("#ag-form").addEventListener("submit", async () => {
     const label = $("#ag-name").value.trim();
+    const instructor = $("#ag-instructor").value.trim();
     if (label.length < 3) { $("#ag-status").textContent = ui("addGroupShort"); return; }
+    if (instructor.length < 2) { $("#ag-status").textContent = ui("addGroupNoInstructor"); return; }
     if (!CFG.submitUrl) { $("#ag-status").textContent = ui("sendOff"); return; }
     $("#ag-create").disabled = true;
     $("#ag-status").textContent = ui("loading");
     try {
       const r = await fetch(CFG.submitUrl, {
         method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ action: "addGroup", label }),
+        body: JSON.stringify({ action: "addGroup", label, instructor }),
       });
       const js = await r.json();
       if (!js.ok || !js.group) throw new Error(js.error || "failed");
       const g = js.group;
-      if (!CLASSES.some((c) => c.id === g.id)) CLASSES.unshift({ id: g.id, label: g.label });
+      if (!CLASSES.some((c) => c.id === g.id)) CLASSES.unshift({ id: g.id, label: g.label, instructor: g.instructor || instructor });
       fillClassSelects();
       $("#in-class").value = g.id;
       $("#ag-done-msg").textContent = fmt(ui("addGroupDone"), { name: g.label });
@@ -705,11 +711,19 @@
     if (!document.hidden && !$("#screen-class").classList.contains("hidden")) loadClass(true);
   });
 
+  function showInstructor() {
+    const g = CLASSES.find((c) => c.id === $("#cv-class").value);
+    const el = $("#cv-instructor");
+    el.classList.toggle("hidden", !(g && g.instructor));
+    el.textContent = g && g.instructor ? fmt(ui("instructorLbl"), { name: g.instructor }) : "";
+  }
+
   async function loadClass(quiet) {
     const group = $("#cv-class").value;
     const st = $("#cv-status");
     autoRefresh();
     syncUrl();
+    showInstructor();
     if (quiet === true && classData && classData.group === group) {
       // background refresh: keep the current tables on screen until the new ones arrive
       try {

@@ -89,6 +89,9 @@ window.CONTENT = {
       pt: "Com este comando você estará criando um novo grupo para a realização de atividades (por exemplo, uma aula ou um curso). Ele aparecerá na lista para todos, e os resultados dos alunos ficarão reunidos em um ranking próprio. Se você só quer jogar, feche esta janela.",
     },
     addGroupName: { en: "Group name", pt: "Nome do grupo" },
+    addGroupInstructor: { en: "Instructor's name", pt: "Nome do(a) professor(a)" },
+    addGroupNoInstructor: { en: "Please write the instructor's name.", pt: "Escreva o nome do(a) professor(a)." },
+    instructorLbl: { en: "Instructor: {name}", pt: "Professor(a): {name}" },
     addGroupHelp: {
       en: "For example: \"Forest Remote Sensing - INPE - March 2027\". The creation date is added automatically.",
       pt: "Por exemplo: \"Sensoriamento Remoto Florestal - INPE - março 2027\". A data de criação é adicionada automaticamente.",
@@ -173,8 +176,8 @@ window.CONTENT = {
     },
     sendOff: { en: "Result emailing is not configured on this copy of the game.", pt: "O envio por e-mail não está configurado nesta cópia do jogo." },
     credits: {
-      en: "Imagery: Copernicus Sentinel-2 (ESA), via Element 84 Earth Search. Site locations from published forest-change products and Ricardo/CTrees research. Ricardo Dalagnol.",
-      pt: "Imagens: Copernicus Sentinel-2 (ESA), via Element 84 Earth Search. Locais a partir de produtos publicados de mudança florestal e de pesquisas do Ricardo/CTrees. Ricardo Dalagnol.",
+      en: "Imagery: Copernicus Sentinel-2 (ESA), via Element 84 Earth Search. Site locations from published forest-change products and Ricardo's research. Ricardo Dalagnol.",
+      pt: "Imagens: Copernicus Sentinel-2 (ESA), via Element 84 Earth Search. Locais a partir de produtos publicados de mudança florestal e de pesquisas do Ricardo. Ricardo Dalagnol.",
     },
   },
 

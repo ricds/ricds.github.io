@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="game.css?v=9">
+  <link rel="stylesheet" href="game.css?v=10">
 </head>
 <body>
   <header class="top">
@@ -193,6 +193,7 @@
         <button class="btn" id="btn-cv-refresh" type="button" data-i18n="refresh"></button>
         <button class="btn" id="btn-cv-back" type="button" data-i18n="back"></button>
       </div>
+      <p id="cv-instructor" class="lead hidden"></p>
       <p id="cv-status" class="small"></p>
       <div id="cv-body" class="hidden">
         <div class="stats" id="cv-stats"></div>
@@ -228,6 +229,9 @@
       <div id="ag-step-form" class="form">
         <label><span data-i18n="addGroupName"></span>
           <input id="ag-name" required maxlength="60" placeholder="">
+        </label>
+        <label><span data-i18n="addGroupInstructor"></span>
+          <input id="ag-instructor" required maxlength="80" autocomplete="name">
         </label>
         <p class="small" data-i18n="addGroupHelp"></p>
         <div class="row">
@@ -270,9 +274,9 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="config.js?v=9"></script>
-  <script src="sites_data.js?v=9"></script>
-  <script src="content.js?v=9"></script>
-  <script src="game.js?v=9"></script>
+  <script src="config.js?v=10"></script>
+  <script src="sites_data.js?v=10"></script>
+  <script src="content.js?v=10"></script>
+  <script src="game.js?v=10"></script>
 </body>
 </html>

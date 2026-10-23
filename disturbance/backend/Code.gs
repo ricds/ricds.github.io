@@ -19,7 +19,7 @@ const GROUP_SHEET = 'groups';
 const MAX_ANSWERS = 60;
 const MAX_GROUPS = 300;
 const HEAD = ['received', 'group', 'name', 'email', 'org', 'lang', 'score', 'total', 'seconds', 'started', 'finished', 'answers_json'];
-const GROUP_HEAD = ['created', 'id', 'label'];
+const GROUP_HEAD = ['created', 'id', 'label', 'instructor'];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -27,7 +27,7 @@ function doPost(e) {
     const d = JSON.parse(e.postData.contents);
     if (d.action === 'addGroup') {
       lock.waitLock(20000);
-      const g = addGroup(clean(d.label, 60));
+      const g = addGroup(clean(d.label, 60), clean(d.instructor, 80));
       lock.releaseLock();
       return json({ ok: true, group: g });
     }
@@ -95,33 +95,59 @@ function getGroupSheet() {
     sh = ss.insertSheet(GROUP_SHEET);
     sh.appendRow(GROUP_HEAD);
     sh.setFrozenRows(1);
+    return sh;
   }
+  // a column added later (e.g. 'instructor') goes to the end of the header if missing
+  const head = groupHeader_(sh);
+  const missing = GROUP_HEAD.filter(function (h) { return head.indexOf(h) < 0; });
+  if (missing.length) sh.getRange(1, head.length + 1, 1, missing.length).setValues([missing]);
   return sh;
+}
+
+/** Header names of the groups tab, trimmed and lower-case (columns can be in any order). */
+function groupHeader_(sh) {
+  return sh.getRange(1, 1, 1, Math.max(1, sh.getLastColumn())).getValues()[0]
+    .map(function (h) { return String(h).trim().toLowerCase(); });
+}
+
+/** Append one group row, writing each value under its column name. */
+function appendGroupRow_(rec) {
+  const sh = getGroupSheet();
+  sh.appendRow(groupHeader_(sh).map(function (h) { return rec.hasOwnProperty(h) ? rec[h] : ''; }));
 }
 
 /** Groups in creation order (oldest first). */
 function listGroups() {
-  const values = getGroupSheet().getDataRange().getValues();
+  const sh = getGroupSheet();
+  const head = groupHeader_(sh);
+  const values = sh.getDataRange().getValues();
+  const c = { id: head.indexOf('id'), label: head.indexOf('label'), instructor: head.indexOf('instructor') };
   const out = [];
   for (let r = 1; r < values.length; r++) {
-    if (values[r][1]) out.push({ id: String(values[r][1]), label: String(values[r][2] || values[r][1]) });
+    const id = values[r][c.id];
+    if (!id) continue;
+    out.push({ id: String(id), label: String((c.label >= 0 && values[r][c.label]) || id),
+      instructor: c.instructor >= 0 ? String(values[r][c.instructor] || '') : '' });
   }
   return out;
 }
 
 /** New group: label gets the creation date, id = date + short slug + random tail (unique). */
-function addGroup(label) {
+function addGroup(label, instructor) {
   if (label.length < 3) throw new Error('name too short');
-  const sh = getGroupSheet();
-  if (sh.getLastRow() - 1 >= MAX_GROUPS) throw new Error('too many groups');
+  if (instructor.length < 2) throw new Error('missing instructor');
+  if (getGroupSheet().getLastRow() - 1 >= MAX_GROUPS) throw new Error('too many groups');
   const tz = Session.getScriptTimeZone();
-  const day = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd');
-  const slug = label.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24);
-  const id = day + '-' + (slug || 'grupo') + '-' + Math.random().toString(36).slice(2, 6);
+  const id = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd') + '-' + slug_(label) + '-' +
+    Math.random().toString(36).slice(2, 6);
   const full = label + ' (' + Utilities.formatDate(new Date(), tz, 'dd/MM/yyyy') + ')';
-  sh.appendRow([new Date(), id, full]);
-  return { id: id, label: full };
+  appendGroupRow_({ created: new Date(), id: id, label: full, instructor: instructor });
+  return { id: id, label: full, instructor: instructor };
+}
+
+function slug_(label) {
+  return label.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24) || 'grupo';
 }
 
 function classResults(group) {
@@ -206,8 +232,8 @@ function findOrCreateGroup_(label) {
     .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24);
   const id = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd') + '-' + (slug || 'grupo') + '-' +
     Math.random().toString(36).slice(2, 6);
-  getGroupSheet().appendRow([new Date(), id, label]);
-  return { id: id, label: label };
+  appendGroupRow_({ created: new Date(), id: id, label: label, instructor: '' });
+  return { id: id, label: label, instructor: '' };
 }
 
 function clearPractice() { clearGroup_(''); }
