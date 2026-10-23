@@ -667,7 +667,22 @@
   $("#btn-class-view").addEventListener("click", () => openClassView($("#in-class").value));
   $("#btn-start-class").addEventListener("click", () => openClassView($("#in-class").value));
   $("#btn-end-class").addEventListener("click", () => openClassView(state.group));
+  // the address bar follows the class page, so it can be copied and shared as is
+  function syncUrl() {
+    const q = new URLSearchParams();
+    if (!$("#screen-class").classList.contains("hidden")) {
+      q.set("view", "class");
+      q.set("class", $("#cv-class").value);
+    }
+    if (REVIEW) q.set("review", "1");
+    if (QS.get("local") === "1") q.set("local", "1");
+    if (state.lang === "pt") q.set("lang", "pt");
+    const s = q.toString();
+    try { history.replaceState(null, "", location.pathname + (s ? "?" + s : "")); } catch (e) { /* file:// etc. */ }
+  }
+
   $("#btn-cv-back").addEventListener("click", () => {
+    setTimeout(syncUrl, 0);
     if (returnTo === "#screen-quiz") { show(returnTo); renderQuestion(); }
     else if (returnTo === "#screen-end") finish();
     else initStart();
@@ -694,6 +709,7 @@
     const group = $("#cv-class").value;
     const st = $("#cv-status");
     autoRefresh();
+    syncUrl();
     if (quiet === true && classData && classData.group === group) {
       // background refresh: keep the current tables on screen until the new ones arrive
       try {
@@ -768,6 +784,7 @@
     state.lang = b.dataset.lang;
     save();
     applyLang();
+    syncUrl();
   }));
 
   // ---------- boot ----------
