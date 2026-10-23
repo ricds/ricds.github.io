@@ -9,6 +9,8 @@ needs a server lives in **one Google Apps Script bound to a Google Sheet** (`Cod
 | Email the result | to the student, instructor (`TEACHER_EMAIL` in `Code.gs`) on BCC |
 | Class ranking page | `GET <web app>?action=class&group=<id>` (names + scores, never emails) |
 | Groups ("+ Add group") | stored in the **groups** tab; `GET ?action=groups`, `POST {action:"addGroup", label, instructor}` |
+| Close / re-open a group | on its results page with the group's manage key: `POST {action:"setStatus", group, key, closed}` |
+| Manage links by email | `POST {action:"emailManageLinks"}`, sent to `TEACHER_EMAIL` only |
 | Clean up / fix | menu **Disturbance game** inside the Sheet (owner only), see below |
 
 No cost: Apps Script on a personal Google account has no billing.
@@ -54,20 +56,29 @@ Appears when the Sheet is opened (owner only; the first use asks for authorizati
   (no date added, no instructor - fill the `instructor` cell by hand), lists today's "no
   group" results and, after confirming, moves them into the group. Shows the group link and
   ranking link at the end. "Today" is the script's time zone (File > Project settings).
-- **Fechar um grupo (close)...** / **Reabrir um grupo (re-open)...** - lists the groups by
-  number and writes `closed` (or clears it) in the group's `status` cell. Typing `closed` in
-  that cell by hand does the same.
+## Closing / re-opening a group (on the website)
 
-## Closing a group
+Every group has a secret **manage key** (column `key` of **groups**; filled in automatically
+for groups made before keys existed). Whoever has a group's **manage link**
+(`.../disturbance/?view=class&class=<id>&key=<key>`) sees, on that group's results page, a
+dashed bar with **Close group** / **Re-open group**. Nobody else sees it, and the server
+refuses a wrong key.
 
-A group whose `status` is `closed`:
+- **Getting the manage link:** the instructor who creates a group on the page sees it in the
+  "group created" popup, and that browser remembers it. For any group, the hidden **Manage**
+  link (background colour, bottom of the class results page, next to **Review**) emails the
+  manage links of all groups to `TEACHER_EMAIL` only (at most once per 5 minutes).
+- Opening a manage link stores the key in that browser and removes it from the address bar,
+  so the ranking link copied from the address bar never carries the key.
+- Keep manage links private: anyone with one can close or re-open that group.
+
+A closed group (`status` = `closed`):
 - is no longer offered on the start page, and its link (`?class=<id>`) explains it is closed;
 - keeps its ranking page, marked "Closed for new entries";
 - takes no new results: a game finished through an old link or an open tab is still saved
   and emailed, but under "no class", so the closed ranking does not change.
 
-Closing is done in the Sheet only (not through the website), so nobody else can close or
-re-open a group.
+Typing `closed` in the `status` cell by hand also works.
 
 ## Sheet layout
 
@@ -76,7 +87,7 @@ re-open a group.
   rows are written by column name). `group` is empty for "no class (just practising)".
   `answers_json` holds all 30 answers (site id, place, lat/lon, right answer, chosen answer,
   correct, sure/guessing).
-- **groups**: `created, id, label, instructor, status` (read by column name, any order; a missing
+- **groups**: `created, id, label, instructor, status, key` (read by column name, any order; a missing
   column is added to the header automatically). Rows come from "+ Add group" on the page,
   which asks for the group name and the instructor's name; the label gets the creation date;
   the id looks like `2026-10-23-sensoriamento-remoto-ab12`. The instructor is shown on the

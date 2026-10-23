@@ -93,6 +93,25 @@ window.CONTENT = {
     addGroupNoInstructor: { en: "Please write the instructor's name.", pt: "Escreva o nome do(a) professor(a)." },
     instructorLbl: { en: "Instructor: {name}", pt: "Professor(a): {name}" },
     closedTag: { en: "closed", pt: "encerrado" },
+    manageLinkIntro: {
+      en: "Your private manage link - keep it, and do not share it: it lets you close or re-open this group on its results page. This browser also remembers it.",
+      pt: "Seu link privado de gerenciamento - guarde-o e não o compartilhe: ele permite encerrar ou reabrir este grupo na página de resultados. Este navegador também o guarda.",
+    },
+    manageOpen: { en: "You manage this group. It is open for new entries.", pt: "Você gerencia este grupo. Ele está aberto para novas participações." },
+    manageClosed: { en: "You manage this group. It is closed for new entries.", pt: "Você gerencia este grupo. Ele está encerrado para novas participações." },
+    closeGroup: { en: "Close group", pt: "Encerrar grupo" },
+    reopenGroup: { en: "Re-open group", pt: "Reabrir grupo" },
+    closeConfirm: {
+      en: "Close this group? It leaves the start list and its ranking stops changing. You can re-open it later.",
+      pt: "Encerrar este grupo? Ele sai da lista inicial e o ranking para de mudar. Você pode reabri-lo depois.",
+    },
+    manageFail: { en: "Could not change the group (wrong or old manage link?).", pt: "Não foi possível alterar o grupo (link de gerenciamento errado ou antigo?)." },
+    manageAsk: {
+      en: "Email the manage links of all groups to the site owner?",
+      pt: "Enviar os links de gerenciamento de todos os grupos para o e-mail do dono do site?",
+    },
+    manageSent: { en: "Sent to the site owner's email.", pt: "Enviado para o e-mail do dono do site." },
+    manageRecent: { en: "Already sent in the last 5 minutes - check the inbox.", pt: "Já enviado nos últimos 5 minutos - confira a caixa de entrada." },
     groupIsClosed: { en: "Closed for new entries", pt: "Encerrado para novas participações" },
     linkClosed: {
       en: "The group \"{name}\" is closed for new entries. You can still play without a group.",

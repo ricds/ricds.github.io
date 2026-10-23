@@ -8,8 +8,13 @@
  *        times and per-image answers of everyone in that class. Emails are never returned.
  *        Only each email's FIRST finished game in a class counts, so replaying cannot
  *        climb the ranking.
- *  POST {action: "addGroup", label}  -> creates a group (class session) in the "groups"
- *        sheet; GET ?action=groups lists them, so the page offers them to everyone.
+ *  POST {action: "addGroup", label, instructor}  -> creates a group (class session) in the
+ *        "groups" sheet and returns its secret manage key to the creator only; GET
+ *        ?action=groups lists the groups (never the keys), so the page offers them to everyone.
+ *  POST {action: "setStatus", group, key, closed}  -> closes / re-opens a group; needs the
+ *        group's key, which only its instructor has.
+ *  POST {action: "emailManageLinks"}  -> emails the manage links of all groups to
+ *        TEACHER_EMAIL only (so the owner never needs to open the Sheet); at most once per 5 min.
  * The instructor address lives here, not in the public page. Setup: see SETUP.md.
  */
 const TEACHER_EMAIL = 'ricds@hotmail.com';
@@ -19,7 +24,8 @@ const GROUP_SHEET = 'groups';
 const MAX_ANSWERS = 60;
 const MAX_GROUPS = 300;
 const HEAD = ['received', 'group', 'name', 'email', 'org', 'lang', 'score', 'total', 'seconds', 'started', 'finished', 'answers_json'];
-const GROUP_HEAD = ['created', 'id', 'label', 'instructor', 'status'];  // status: '' open, 'closed'
+// status: '' open, 'closed'; key: secret that lets the instructor close / re-open on the page
+const GROUP_HEAD = ['created', 'id', 'label', 'instructor', 'status', 'key'];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -31,6 +37,13 @@ function doPost(e) {
       lock.releaseLock();
       return json({ ok: true, group: g });
     }
+    if (d.action === 'setStatus') {
+      lock.waitLock(20000);
+      const closed = setStatus_(clean(d.group, 60), clean(d.key, 40), d.closed === true);
+      lock.releaseLock();
+      return json({ ok: true, closed: closed });
+    }
+    if (d.action === 'emailManageLinks') return json(emailManageLinks_());
     const name = clean(d.name, 80);
     const email = clean(d.email, 120).toLowerCase();
     if (!name) throw new Error('missing name');
@@ -146,8 +159,9 @@ function addGroup(label, instructor) {
   const id = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd') + '-' + slug_(label) + '-' +
     Math.random().toString(36).slice(2, 6);
   const full = label + ' (' + Utilities.formatDate(new Date(), tz, 'dd/MM/yyyy') + ')';
-  appendGroupRow_({ created: new Date(), id: id, label: full, instructor: instructor });
-  return { id: id, label: full, instructor: instructor };
+  const key = newKey_();
+  appendGroupRow_({ created: new Date(), id: id, label: full, instructor: instructor, key: key });
+  return { id: id, label: full, instructor: instructor, key: key };  // the key goes to the creator only
 }
 
 function slug_(label) {
@@ -188,39 +202,61 @@ function onOpen() {
     .addItem('Limpar "Sem turma" (practice)', 'clearPractice')
     .addItem('Limpar uma turma... (clear a class)', 'clearClassPrompt')
     .addSeparator()
-    .addItem('Mover "Sem turma" de hoje para um grupo...', 'moveTodayPracticePrompt')
-    .addSeparator()
-    .addItem('Fechar um grupo (close)...', 'closeGroupPrompt')
-    .addItem('Reabrir um grupo (re-open)...', 'reopenGroupPrompt')
     .addToUi();
 }
+
+// ---------- closing / re-opening groups from the website ----------
 
 function isClosed_(id) {
   return listGroups().some(function (g) { return g.id === id && g.closed; });
 }
 
-function closeGroupPrompt() { setGroupStatusPrompt_('closed'); }
-function reopenGroupPrompt() { setGroupStatusPrompt_(''); }
+function newKey_() { return Utilities.getUuid().replace(/-/g, '').slice(0, 16); }
 
-/** Lists the groups that can change state, asks for a number, writes the status cell. */
-function setGroupStatusPrompt_(status) {
-  const ui = SpreadsheetApp.getUi();
-  const closing = status === 'closed';
-  const groups = listGroups().filter(function (g) { return g.closed !== closing; });
-  if (!groups.length) { ui.alert(closing ? 'Nenhum grupo aberto.' : 'Nenhum grupo fechado.'); return; }
-  const lines = groups.map(function (g, i) { return (i + 1) + '. ' + g.label; }).join('\n');
-  const r = ui.prompt(closing ? 'Fechar grupo' : 'Reabrir grupo', 'Número do grupo:\n\n' + lines, ui.ButtonSet.OK_CANCEL);
-  if (r.getSelectedButton() !== ui.Button.OK) return;
-  const g = groups[parseInt(r.getResponseText(), 10) - 1];
-  if (!g) { ui.alert('Número inválido.'); return; }
+/** Row number (1-based) and key of a group; fills in a missing key (groups made before keys). */
+function groupRow_(id) {
   const sh = getGroupSheet();
   const head = groupHeader_(sh);
-  const ids = sh.getRange(2, head.indexOf('id') + 1, Math.max(1, sh.getLastRow() - 1), 1).getValues();
-  for (let i = 0; i < ids.length; i++) {
-    if (String(ids[i][0]) === g.id) sh.getRange(i + 2, head.indexOf('status') + 1).setValue(status);
+  const values = sh.getDataRange().getValues();
+  for (let r = 1; r < values.length; r++) {
+    if (String(values[r][head.indexOf('id')]) !== id) continue;
+    let key = String(values[r][head.indexOf('key')] || '');
+    if (!key) { key = newKey_(); sh.getRange(r + 1, head.indexOf('key') + 1).setValue(key); }
+    return { row: r + 1, key: key, sh: sh, head: head, label: String(values[r][head.indexOf('label')] || id) };
   }
-  ui.alert('"' + g.label + '" ' + (closing ? 'fechado: não aparece mais na lista e não recebe novos resultados.'
-    : 'reaberto: aparece de novo na lista e recebe resultados.'));
+  return null;
+}
+
+/** Close or re-open a group; only with the group's key. Returns the new closed state. */
+function setStatus_(id, key, closed) {
+  const g = groupRow_(id);
+  if (!g) throw new Error('unknown group');
+  if (!key || key !== g.key) throw new Error('wrong key');
+  g.sh.getRange(g.row, g.head.indexOf('status') + 1).setValue(closed ? 'closed' : '');
+  return closed;
+}
+
+const manageLink_ = function (id, key) {
+  return GAME_URL + '?view=class&class=' + encodeURIComponent(id) + '&key=' + encodeURIComponent(key);
+};
+
+/** Emails the manage link of every group to the owner only; rate-limited. */
+function emailManageLinks_() {
+  const cache = CacheService.getScriptCache();
+  if (cache.get('manageLinksSent')) return { ok: true, sent: false, reason: 'recently sent' };
+  const lines = listGroups().map(function (g) {
+    const r = groupRow_(g.id);
+    return g.label + (g.closed ? ' [closed]' : '') + '\n' + manageLink_(g.id, r.key);
+  });
+  MailApp.sendEmail({
+    to: TEACHER_EMAIL,
+    name: 'Ricardo Dalagnol (Forest Disturbance Game)',
+    subject: 'Forest Disturbance Game - manage links for your groups',
+    body: 'Open a link to close or re-open that group on the website. Keep these links private: ' +
+      'anyone with a link can close or re-open its group.\n\n' + (lines.join('\n\n') || '(no groups yet)'),
+  });
+  cache.put('manageLinksSent', '1', 300);
+  return { ok: true, sent: true };
 }
 
 /**
@@ -268,7 +304,7 @@ function findOrCreateGroup_(label) {
     .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24);
   const id = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd') + '-' + (slug || 'grupo') + '-' +
     Math.random().toString(36).slice(2, 6);
-  appendGroupRow_({ created: new Date(), id: id, label: label, instructor: '' });
+  appendGroupRow_({ created: new Date(), id: id, label: label, instructor: '', key: newKey_() });
   return { id: id, label: label, instructor: '' };
 }
 

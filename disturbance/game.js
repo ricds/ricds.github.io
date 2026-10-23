@@ -16,6 +16,17 @@
   // a group's own link (?class=<id>) preselects that group on the start page
   const LINK_GROUP = QS.get("view") === "class" ? "" : (QS.get("class") || "");
   let PENDING_CV = null;  // class asked for on the class page before the groups have loaded
+
+  // manage keys of the groups this browser can close / re-open ({groupId: key}); a manage link
+  // (?view=class&class=<id>&key=<key>) stores its key here, and the key is then dropped from
+  // the address bar so a copied ranking link never carries it
+  const KEYS = "disturbanceGame.keys";
+  function groupKeys() { try { return JSON.parse(localStorage.getItem(KEYS)) || {}; } catch (e) { return {}; } }
+  function saveKey(id, key) {
+    const k = groupKeys(); k[id] = key;
+    try { localStorage.setItem(KEYS, JSON.stringify(k)); } catch (e) { /* manage link still works */ }
+  }
+  if (QS.get("key") && QS.get("class")) saveKey(QS.get("class"), QS.get("key"));
   const CLASS_IDS = C.classes.map((c) => c.id);
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => Array.from(document.querySelectorAll(s));
@@ -642,6 +653,10 @@
   $("#btn-add-group").addEventListener("click", openAddGroup);
   $("#ag-cancel").addEventListener("click", closeAddGroup);
   $("#ag-close").addEventListener("click", closeAddGroup);
+  $("#ag-copy-manage").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText($("#ag-manage").textContent); } catch (e) { /* the link stays selectable */ }
+    $("#ag-copy-manage").textContent = ui("copied");
+  });
   $("#ag-copy").addEventListener("click", async () => {
     try { await navigator.clipboard.writeText($("#ag-link").textContent); } catch (e) { /* the link stays selectable */ }
     $("#ag-copy").textContent = ui("copied");
@@ -663,11 +678,15 @@
       if (!js.ok || !js.group) throw new Error(js.error || "failed");
       const g = js.group;
       if (!CLASSES.some((c) => c.id === g.id)) CLASSES.unshift({ id: g.id, label: g.label, instructor: g.instructor || instructor });
+      if (g.key) saveKey(g.id, g.key);
       fillClassSelects();
       $("#in-class").value = g.id;
       $("#ag-done-msg").textContent = fmt(ui("addGroupDone"), { name: g.label });
       $("#ag-link").textContent = groupLink(g.id);
+      $("#ag-manage").textContent = g.key
+        ? `${location.origin}${location.pathname}?view=class&class=${encodeURIComponent(g.id)}&key=${encodeURIComponent(g.key)}` : "";
       $("#ag-copy").textContent = ui("copy");
+      $("#ag-copy-manage").textContent = ui("copy");
       $("#ag-step-form").classList.add("hidden");
       $("#ag-step-done").classList.remove("hidden");
     } catch (e) {
@@ -724,7 +743,60 @@
     if (g && g.closed) parts.push(ui("groupIsClosed"));
     el.classList.toggle("hidden", !parts.length);
     el.textContent = parts.join(" · ");
+    showManage(g);
   }
+
+  // close / re-open bar: only for a group whose manage key this browser has
+  function showManage(g) {
+    const key = g && groupKeys()[g.id];
+    $("#cv-manage").classList.toggle("hidden", !key);
+    if (!key) return;
+    $("#cv-manage-text").textContent = ui(g.closed ? "manageClosed" : "manageOpen");
+    $("#btn-toggle-closed").textContent = ui(g.closed ? "reopenGroup" : "closeGroup");
+  }
+
+  $("#btn-toggle-closed").addEventListener("click", async () => {
+    const g = CLASSES.find((c) => c.id === $("#cv-class").value);
+    const key = g && groupKeys()[g.id];
+    if (!key) return;
+    const closing = !g.closed;
+    if (closing && !confirm(ui("closeConfirm"))) return;
+    const st = $("#cv-manage-status");
+    st.textContent = ui("loading");
+    $("#btn-toggle-closed").disabled = true;
+    try {
+      const r = await fetch(CFG.submitUrl, {
+        method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "setStatus", group: g.id, key, closed: closing }),
+      });
+      const js = await r.json();
+      if (!js.ok) throw new Error(js.error);
+      g.closed = !!js.closed;
+      st.textContent = "";
+      fillClassSelects();
+      showInstructor();
+    } catch (e) {
+      st.textContent = ui("manageFail");
+    }
+    $("#btn-toggle-closed").disabled = false;
+  });
+
+  // hidden "Manage" link: emails the manage links of all groups to the site owner only
+  $("#manage-link").addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (!CFG.submitUrl || !confirm(ui("manageAsk"))) return;
+    try {
+      const r = await fetch(CFG.submitUrl, {
+        method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "emailManageLinks" }),
+      });
+      const js = await r.json();
+      if (!js.ok) throw new Error(js.error);
+      alert(ui(js.sent === false ? "manageRecent" : "manageSent"));
+    } catch (err) {
+      alert(ui("manageFail"));
+    }
+  });
 
   async function loadClass(quiet) {
     const group = $("#cv-class").value;
