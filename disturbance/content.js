@@ -114,8 +114,8 @@ window.CONTENT = {
     manageRecent: { en: "Already sent in the last 5 minutes - check the inbox.", pt: "Já enviado nos últimos 5 minutos - confira a caixa de entrada." },
     groupIsClosed: { en: "Closed for new entries", pt: "Encerrado para novas participações" },
     linkClosed: {
-      en: "The group \"{name}\" is closed for new entries. You can still play without a group.",
-      pt: "O grupo \"{name}\" está encerrado para novas participações. Você ainda pode jogar sem grupo.",
+      en: "The group \"{name}\" is closed for new entries. You can see its ranking, or pick \"No class\" to play.",
+      pt: "O grupo \"{name}\" está encerrado para novas participações. Você pode ver o ranking, ou escolher \"Sem turma\" para jogar.",
     },
     savedNoGroup: {
       en: "The group was closed in the meantime, so your result was saved without a group.",

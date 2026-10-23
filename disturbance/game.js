@@ -73,23 +73,32 @@
   }
 
   function fillClassSelects() {
-    // closed groups take no new students: left out of the start list, kept (marked) for rankings
+    // closed groups stay in both lists (marked) so their ranking can be opened, but a game
+    // cannot be started in one: see lockForClosed()
     const opts = (sel, list) => {
       const keep = sel.value;
       sel.innerHTML = `<option value="">${esc(ui("noClass"))}</option>` +
         list.map((c) => `<option value="${esc(c.id)}">${esc(tx(c.label))}${c.closed ? " - " + esc(ui("closedTag")) : ""}</option>`).join("");
       if (keep && Array.from(sel.options).some((o) => o.value === keep)) sel.value = keep;
     };
-    const open = CLASSES.filter((c) => !c.closed);
-    opts($("#in-class"), open);
+    opts($("#in-class"), CLASSES);
     opts($("#cv-class"), CLASSES);
     // default to "no class (just practising)"; a group link (?class=<id>) preselects its group
     const want = LINK_GROUP || state.group || "";
-    $("#in-class").value = open.some((c) => c.id === want) ? want : "";
-    const linkClosed = CLASSES.find((c) => c.id === LINK_GROUP && c.closed);
-    $("#closed-note").classList.toggle("hidden", !linkClosed);
-    if (linkClosed) $("#closed-note").textContent = fmt(ui("linkClosed"), { name: tx(linkClosed.label) });
+    $("#in-class").value = CLASSES.some((c) => c.id === want) ? want : "";
+    lockForClosed();
   }
+
+  // a closed group on the start page: the form is read-only and Start is off; only the
+  // ranking button stays usable
+  function lockForClosed() {
+    const g = CLASSES.find((c) => c.id === $("#in-class").value && c.closed);
+    ["#in-name", "#in-email", "#in-org"].forEach((s) => { $(s).readOnly = !!g; });
+    $("#start-form [type=submit]").disabled = !!g;
+    $("#closed-note").classList.toggle("hidden", !g);
+    if (g) $("#closed-note").textContent = fmt(ui("linkClosed"), { name: tx(g.label) });
+  }
+  $("#in-class").addEventListener("change", lockForClosed);
 
   async function loadGroups() {
     if (!CFG.submitUrl) return;
@@ -131,6 +140,7 @@
   }
 
   $("#start-form").addEventListener("submit", () => {
+    if (CLASSES.some((c) => c.id === $("#in-class").value && c.closed)) return;  // closed: ranking only
     state = Object.assign(fresh(), {
       lang: state.lang, name: $("#in-name").value.trim(), email: $("#in-email").value.trim(),
       org: $("#in-org").value.trim(), group: $("#in-class").value, startedAt: new Date().toISOString(),
