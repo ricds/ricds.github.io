@@ -93,6 +93,7 @@ window.CONTENT = {
     addGroupNoInstructor: { en: "Please write the instructor's name.", pt: "Escreva o nome do(a) professor(a)." },
     instructorLbl: { en: "Instructor: {name}", pt: "Professor(a): {name}" },
     closedTag: { en: "closed", pt: "encerrado" },
+    loadingGroups: { en: "Loading groups...", pt: "Carregando grupos..." },
     manageLinkIntro: {
       en: "Your private manage link - keep it, and do not share it: it lets you close or re-open this group on its results page. This browser also remembers it.",
       pt: "Seu link privado de gerenciamento - guarde-o e não o compartilhe: ele permite encerrar ou reabrir este grupo na página de resultados. Este navegador também o guarda.",

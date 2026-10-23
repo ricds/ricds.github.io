@@ -73,6 +73,7 @@
   }
 
   function fillClassSelects() {
+    if (!groupsReady) return groupsLoading(true);
     // closed groups stay in both lists (marked) so their ranking can be opened, but a game
     // cannot be started in one: see lockForClosed()
     const opts = (sel, list) => {
@@ -100,24 +101,52 @@
   }
   $("#in-class").addEventListener("change", lockForClosed);
 
+  // The group list comes from the results service, which can take a second or two to answer.
+  // The last list is kept in this browser and shown at once; until a list is available the
+  // class selectors are disabled and say "Loading groups..." (a native select that is already
+  // open does not redraw well when options arrive).
+  const GROUPS_CACHE = "disturbanceGame.groups";
+  const BASE_CLASSES = CLASSES.slice();
+  function setGroups(list) {
+    const fromServer = list.filter((g) => g.id)
+      .map((g) => ({ id: g.id, label: g.label || g.id, instructor: g.instructor || "", closed: !!g.closed }));
+    const ids = new Set(fromServer.map((g) => g.id));
+    // newest groups first, above the fixed ones from config.js
+    CLASSES = fromServer.slice().reverse().concat(BASE_CLASSES.filter((c) => !ids.has(c.id)));
+  }
+  function groupsLoading(on) {
+    ["#in-class", "#cv-class"].forEach((s) => {
+      $(s).disabled = on;
+      if (on) $(s).innerHTML = `<option value="">${esc(ui("loadingGroups"))}</option>`;
+    });
+  }
+  let groupsReady = !CFG.submitUrl;
+  try {
+    const cached = JSON.parse(localStorage.getItem(GROUPS_CACHE));
+    if (Array.isArray(cached)) { setGroups(cached); groupsReady = true; }
+  } catch (e) { /* no cache: wait for the service */ }
+
   async function loadGroups() {
     if (!CFG.submitUrl) return;
+    if (!groupsReady) groupsLoading(true);
     try {
       const r = await fetch(`${CFG.submitUrl}?action=groups`);
       const js = await r.json();
-      if (!js.ok || !Array.isArray(js.groups)) return;
-      const known = new Set(CLASSES.map((c) => c.id));
-      // newest groups first, above the fixed ones
-      const added = js.groups.filter((g) => g.id && !known.has(g.id))
-        .map((g) => ({ id: g.id, label: g.label || g.id, instructor: g.instructor || "", closed: !!g.closed }));
-      CLASSES = added.reverse().concat(CLASSES);
-      fillClassSelects();
-      showInstructor();
-      if (!$("#screen-class").classList.contains("hidden") && PENDING_CV && $("#cv-class").value !== PENDING_CV) {
-        $("#cv-class").value = PENDING_CV;
-        loadClass();
-      }
-    } catch (e) { /* the fixed classes still work */ }
+      if (!js.ok || !Array.isArray(js.groups)) throw new Error("bad answer");
+      setGroups(js.groups);
+      try { localStorage.setItem(GROUPS_CACHE, JSON.stringify(js.groups)); } catch (e) { /* no cache */ }
+    } catch (e) { /* keep the cached / fixed groups */ }
+    groupsReady = true;
+    groupsLoading(false);
+    // don't rebuild a list the user has open right now: wait until it closes
+    const open = [$("#in-class"), $("#cv-class")].find((el) => el === document.activeElement);
+    if (open) open.addEventListener("blur", fillClassSelects, { once: true });
+    else fillClassSelects();
+    showInstructor();
+    if (!$("#screen-class").classList.contains("hidden") && PENDING_CV && $("#cv-class").value !== PENDING_CV) {
+      $("#cv-class").value = PENDING_CV;
+      loadClass();
+    }
   }
 
   // ---------- screens ----------
