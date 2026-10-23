@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="game.css?v=15">
+  <link rel="stylesheet" href="game.css?v=16">
 </head>
 <body>
   <header class="top">
@@ -31,12 +31,6 @@
           <p class="kicker" data-i18n="kicker"></p>
           <h1 data-i18n="title"></h1>
           <p class="lead" data-i18n="intro"></p>
-          <ul class="howto">
-            <li data-i18n="howto1"></li>
-            <li data-i18n="howto2"></li>
-            <li data-i18n="howto3"></li>
-            <li data-i18n="howto4"></li>
-          </ul>
       <form id="start-form" class="card form" autocomplete="on" onsubmit="event.preventDefault()">
         <label><span data-i18n="name"></span>
           <input id="in-name" name="name" required maxlength="80" autocomplete="name">
@@ -57,7 +51,6 @@
         </div>
         <p class="small" data-i18n="privacy"></p>
       </form>
-      <p class="add-group-wrap small"><span data-i18n="addGroupLead"></span> <button type="button" class="linkbtn subtle" id="btn-add-group" data-i18n="addGroup"></button></p>
       <div id="resume" class="card hidden">
         <p data-i18n="resumeText"></p>
         <div class="row">
@@ -71,6 +64,14 @@
           <figcaption class="small" data-i18n="heroCaption"></figcaption>
         </figure>
       </div>
+      <!-- how to play: below the form and the picture -->
+      <ul class="howto howto-below">
+        <li data-i18n="howto1"></li>
+        <li data-i18n="howto2"></li>
+        <li data-i18n="howto3"></li>
+        <li data-i18n="howto4"></li>
+      </ul>
+      <p class="add-group-wrap small"><span data-i18n="addGroupLead"></span> <button type="button" class="linkbtn subtle" id="btn-add-group" data-i18n="addGroup"></button></p>
     </section>
 
     <!-- question -->
@@ -282,9 +283,9 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="config.js?v=15"></script>
-  <script src="sites_data.js?v=15"></script>
-  <script src="content.js?v=15"></script>
-  <script src="game.js?v=15"></script>
+  <script src="config.js?v=16"></script>
+  <script src="sites_data.js?v=16"></script>
+  <script src="content.js?v=16"></script>
+  <script src="game.js?v=16"></script>
 </body>
 </html>

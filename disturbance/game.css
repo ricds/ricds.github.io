@@ -64,6 +64,10 @@ main { flex: 1; width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px 
 .form input, .form select { width: 100%; max-width: 100%; min-width: 0; text-overflow: ellipsis; }
 .start-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, 1fr); gap: 28px; align-items: start; margin-bottom: 8px; }
 @media (max-width: 860px) { .start-grid { grid-template-columns: 1fr; } }
+/* how-to-play list under the form and the picture: two columns on wide screens */
+.howto-below { max-width: none; margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); }
+.howto-below li { break-inside: avoid; }
+@media (min-width: 861px) { .howto-below { columns: 2; column-gap: 44px; } }
 .hero { margin: 0; }
 .hero img { width: 100%; display: block; border-radius: var(--radius); box-shadow: var(--shadow); aspect-ratio: 1 / 1; object-fit: cover; }
 .hero figcaption { margin-top: 6px; }
