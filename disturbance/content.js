@@ -92,6 +92,16 @@ window.CONTENT = {
     addGroupInstructor: { en: "Instructor's name", pt: "Nome do(a) professor(a)" },
     addGroupNoInstructor: { en: "Please write the instructor's name.", pt: "Escreva o nome do(a) professor(a)." },
     instructorLbl: { en: "Instructor: {name}", pt: "Professor(a): {name}" },
+    closedTag: { en: "closed", pt: "encerrado" },
+    groupIsClosed: { en: "Closed for new entries", pt: "Encerrado para novas participações" },
+    linkClosed: {
+      en: "The group \"{name}\" is closed for new entries. You can still play without a group.",
+      pt: "O grupo \"{name}\" está encerrado para novas participações. Você ainda pode jogar sem grupo.",
+    },
+    savedNoGroup: {
+      en: "The group was closed in the meantime, so your result was saved without a group.",
+      pt: "O grupo foi encerrado nesse meio-tempo, então seu resultado foi salvo sem grupo.",
+    },
     addGroupHelp: {
       en: "For example: \"Forest Remote Sensing - INPE - March 2027\". The creation date is added automatically.",
       pt: "Por exemplo: \"Sensoriamento Remoto Florestal - INPE - março 2027\". A data de criação é adicionada automaticamente.",

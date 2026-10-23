@@ -62,17 +62,22 @@
   }
 
   function fillClassSelects() {
-    const opts = (sel, withNone) => {
+    // closed groups take no new students: left out of the start list, kept (marked) for rankings
+    const opts = (sel, list) => {
       const keep = sel.value;
-      sel.innerHTML = (withNone ? `<option value="">${esc(ui("noClass"))}</option>` : "") +
-        CLASSES.map((c) => `<option value="${esc(c.id)}">${esc(tx(c.label))}</option>`).join("");
+      sel.innerHTML = `<option value="">${esc(ui("noClass"))}</option>` +
+        list.map((c) => `<option value="${esc(c.id)}">${esc(tx(c.label))}${c.closed ? " - " + esc(ui("closedTag")) : ""}</option>`).join("");
       if (keep && Array.from(sel.options).some((o) => o.value === keep)) sel.value = keep;
     };
-    opts($("#in-class"), true);
-    opts($("#cv-class"), true);
+    const open = CLASSES.filter((c) => !c.closed);
+    opts($("#in-class"), open);
+    opts($("#cv-class"), CLASSES);
     // default to "no class (just practising)"; a group link (?class=<id>) preselects its group
     const want = LINK_GROUP || state.group || "";
-    $("#in-class").value = CLASSES.some((c) => c.id === want) ? want : "";
+    $("#in-class").value = open.some((c) => c.id === want) ? want : "";
+    const linkClosed = CLASSES.find((c) => c.id === LINK_GROUP && c.closed);
+    $("#closed-note").classList.toggle("hidden", !linkClosed);
+    if (linkClosed) $("#closed-note").textContent = fmt(ui("linkClosed"), { name: tx(linkClosed.label) });
   }
 
   async function loadGroups() {
@@ -84,7 +89,7 @@
       const known = new Set(CLASSES.map((c) => c.id));
       // newest groups first, above the fixed ones
       const added = js.groups.filter((g) => g.id && !known.has(g.id))
-        .map((g) => ({ id: g.id, label: g.label || g.id, instructor: g.instructor || "" }));
+        .map((g) => ({ id: g.id, label: g.label || g.id, instructor: g.instructor || "", closed: !!g.closed }));
       CLASSES = added.reverse().concat(CLASSES);
       fillClassSelects();
       showInstructor();
@@ -571,7 +576,7 @@
       if (!r.ok || js.ok === false) throw new Error(js.error || r.status);
       state.sent = true;
       save();
-      st.textContent = js.note || fmt(ui("sentOk"), { email: state.email });
+      st.textContent = js.note || fmt(ui("sentOk"), { email: state.email }) + (js.groupClosed ? " " + ui("savedNoGroup") : "");
     } catch (e) {
       st.textContent = ui("sendFail");
     }
@@ -714,8 +719,11 @@
   function showInstructor() {
     const g = CLASSES.find((c) => c.id === $("#cv-class").value);
     const el = $("#cv-instructor");
-    el.classList.toggle("hidden", !(g && g.instructor));
-    el.textContent = g && g.instructor ? fmt(ui("instructorLbl"), { name: g.instructor }) : "";
+    const parts = [];
+    if (g && g.instructor) parts.push(fmt(ui("instructorLbl"), { name: g.instructor }));
+    if (g && g.closed) parts.push(ui("groupIsClosed"));
+    el.classList.toggle("hidden", !parts.length);
+    el.textContent = parts.join(" · ");
   }
 
   async function loadClass(quiet) {

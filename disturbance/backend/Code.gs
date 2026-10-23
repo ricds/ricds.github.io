@@ -19,7 +19,7 @@ const GROUP_SHEET = 'groups';
 const MAX_ANSWERS = 60;
 const MAX_GROUPS = 300;
 const HEAD = ['received', 'group', 'name', 'email', 'org', 'lang', 'score', 'total', 'seconds', 'started', 'finished', 'answers_json'];
-const GROUP_HEAD = ['created', 'id', 'label', 'instructor'];
+const GROUP_HEAD = ['created', 'id', 'label', 'instructor', 'status'];  // status: '' open, 'closed'
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -35,7 +35,10 @@ function doPost(e) {
     const email = clean(d.email, 120).toLowerCase();
     if (!name) throw new Error('missing name');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('invalid email');
-    const group = clean(d.group, 40);
+    let group = clean(d.group, 40);
+    // a closed group takes no new entries: the game is still saved and emailed, under "no class"
+    let note = '';
+    if (group && isClosed_(group)) { group = ''; note = 'closed'; }
     const answers = (Array.isArray(d.answers) ? d.answers : []).slice(0, MAX_ANSWERS).map(function (a) {
       return {
         id: clean(a.id, 40), place: clean(a.place, 120), lat: Number(a.lat), lon: Number(a.lon),
@@ -74,7 +77,7 @@ function doPost(e) {
       body: mail.text,
       htmlBody: mail.html,
     });
-    return json({ ok: true, score: score });
+    return json({ ok: true, score: score, groupClosed: note === 'closed' });
   } catch (err) {
     try { lock.releaseLock(); } catch (e2) { /* not held */ }
     return json({ ok: false, error: String(err && err.message || err) });
@@ -121,13 +124,15 @@ function listGroups() {
   const sh = getGroupSheet();
   const head = groupHeader_(sh);
   const values = sh.getDataRange().getValues();
-  const c = { id: head.indexOf('id'), label: head.indexOf('label'), instructor: head.indexOf('instructor') };
+  const c = { id: head.indexOf('id'), label: head.indexOf('label'), instructor: head.indexOf('instructor'),
+    status: head.indexOf('status') };
   const out = [];
   for (let r = 1; r < values.length; r++) {
     const id = values[r][c.id];
     if (!id) continue;
     out.push({ id: String(id), label: String((c.label >= 0 && values[r][c.label]) || id),
-      instructor: c.instructor >= 0 ? String(values[r][c.instructor] || '') : '' });
+      instructor: c.instructor >= 0 ? String(values[r][c.instructor] || '') : '',
+      closed: c.status >= 0 && String(values[r][c.status]).trim().toLowerCase() === 'closed' });
   }
   return out;
 }
@@ -184,7 +189,38 @@ function onOpen() {
     .addItem('Limpar uma turma... (clear a class)', 'clearClassPrompt')
     .addSeparator()
     .addItem('Mover "Sem turma" de hoje para um grupo...', 'moveTodayPracticePrompt')
+    .addSeparator()
+    .addItem('Fechar um grupo (close)...', 'closeGroupPrompt')
+    .addItem('Reabrir um grupo (re-open)...', 'reopenGroupPrompt')
     .addToUi();
+}
+
+function isClosed_(id) {
+  return listGroups().some(function (g) { return g.id === id && g.closed; });
+}
+
+function closeGroupPrompt() { setGroupStatusPrompt_('closed'); }
+function reopenGroupPrompt() { setGroupStatusPrompt_(''); }
+
+/** Lists the groups that can change state, asks for a number, writes the status cell. */
+function setGroupStatusPrompt_(status) {
+  const ui = SpreadsheetApp.getUi();
+  const closing = status === 'closed';
+  const groups = listGroups().filter(function (g) { return g.closed !== closing; });
+  if (!groups.length) { ui.alert(closing ? 'Nenhum grupo aberto.' : 'Nenhum grupo fechado.'); return; }
+  const lines = groups.map(function (g, i) { return (i + 1) + '. ' + g.label; }).join('\n');
+  const r = ui.prompt(closing ? 'Fechar grupo' : 'Reabrir grupo', 'Número do grupo:\n\n' + lines, ui.ButtonSet.OK_CANCEL);
+  if (r.getSelectedButton() !== ui.Button.OK) return;
+  const g = groups[parseInt(r.getResponseText(), 10) - 1];
+  if (!g) { ui.alert('Número inválido.'); return; }
+  const sh = getGroupSheet();
+  const head = groupHeader_(sh);
+  const ids = sh.getRange(2, head.indexOf('id') + 1, Math.max(1, sh.getLastRow() - 1), 1).getValues();
+  for (let i = 0; i < ids.length; i++) {
+    if (String(ids[i][0]) === g.id) sh.getRange(i + 2, head.indexOf('status') + 1).setValue(status);
+  }
+  ui.alert('"' + g.label + '" ' + (closing ? 'fechado: não aparece mais na lista e não recebe novos resultados.'
+    : 'reaberto: aparece de novo na lista e recebe resultados.'));
 }
 
 /**

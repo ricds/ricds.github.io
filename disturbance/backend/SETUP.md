@@ -54,6 +54,20 @@ Appears when the Sheet is opened (owner only; the first use asks for authorizati
   (no date added, no instructor - fill the `instructor` cell by hand), lists today's "no
   group" results and, after confirming, moves them into the group. Shows the group link and
   ranking link at the end. "Today" is the script's time zone (File > Project settings).
+- **Fechar um grupo (close)...** / **Reabrir um grupo (re-open)...** - lists the groups by
+  number and writes `closed` (or clears it) in the group's `status` cell. Typing `closed` in
+  that cell by hand does the same.
+
+## Closing a group
+
+A group whose `status` is `closed`:
+- is no longer offered on the start page, and its link (`?class=<id>`) explains it is closed;
+- keeps its ranking page, marked "Closed for new entries";
+- takes no new results: a game finished through an old link or an open tab is still saved
+  and emailed, but under "no class", so the closed ranking does not change.
+
+Closing is done in the Sheet only (not through the website), so nobody else can close or
+re-open a group.
 
 ## Sheet layout
 
@@ -62,7 +76,7 @@ Appears when the Sheet is opened (owner only; the first use asks for authorizati
   rows are written by column name). `group` is empty for "no class (just practising)".
   `answers_json` holds all 30 answers (site id, place, lat/lon, right answer, chosen answer,
   correct, sure/guessing).
-- **groups**: `created, id, label, instructor` (read by column name, any order; a missing
+- **groups**: `created, id, label, instructor, status` (read by column name, any order; a missing
   column is added to the header automatically). Rows come from "+ Add group" on the page,
   which asks for the group name and the instructor's name; the label gets the creation date;
   the id looks like `2026-10-23-sensoriamento-remoto-ab12`. The instructor is shown on the
