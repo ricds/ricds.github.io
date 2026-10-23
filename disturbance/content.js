@@ -82,6 +82,7 @@ window.CONTENT = {
     email: { en: "Your email", pt: "Seu e-mail" },
     org: { en: "Organisation / institute / company", pt: "Organização / instituto / empresa" },
     addGroup: { en: "+ Add group", pt: "+ Adicionar grupo" },
+    addGroupLead: { en: "For instructors, click here to add a group for your class:", pt: "Para professores, clique aqui para adicionar um grupo para a sua turma:" },
     addGroupTitle: { en: "Add a group", pt: "Adicionar grupo" },
     addGroupWarn: {
       en: "With this you are creating a new group for running an activity (for example, a class or a workshop). It will appear in the list for everyone, and its students' results will be grouped together in their own ranking. If you only want to play, close this window.",
@@ -103,8 +104,8 @@ window.CONTENT = {
     ok: { en: "OK", pt: "OK" },
     start: { en: "Start", pt: "Começar" },
     privacy: {
-      en: "Your name, email and answers are sent only to you and to the instructor.",
-      pt: "Seu nome, e-mail e respostas são enviados apenas para você e para o professor.",
+      en: "Your name is used for the ranking, and email is used to send you the results.",
+      pt: "Seu nome é usado no ranking, e o e-mail é usado para enviar o seu resultado.",
     },
     resumeText: { en: "You have a game in progress on this device.", pt: "Você tem um jogo em andamento neste dispositivo." },
     resume: { en: "Continue", pt: "Continuar" },
@@ -172,8 +173,8 @@ window.CONTENT = {
     },
     sendOff: { en: "Result emailing is not configured on this copy of the game.", pt: "O envio por e-mail não está configurado nesta cópia do jogo." },
     credits: {
-      en: "Imagery: Copernicus Sentinel-2 (ESA), via Element 84 Earth Search. Site locations from published forest-change products and CTrees research. Ricardo Dalagnol.",
-      pt: "Imagens: Copernicus Sentinel-2 (ESA), via Element 84 Earth Search. Locais a partir de produtos publicados de mudança florestal e pesquisas da CTrees. Ricardo Dalagnol.",
+      en: "Imagery: Copernicus Sentinel-2 (ESA), via Element 84 Earth Search. Site locations from published forest-change products and Ricardo/CTrees research. Ricardo Dalagnol.",
+      pt: "Imagens: Copernicus Sentinel-2 (ESA), via Element 84 Earth Search. Locais a partir de produtos publicados de mudança florestal e de pesquisas do Ricardo/CTrees. Ricardo Dalagnol.",
     },
   },
 

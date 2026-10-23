@@ -156,7 +156,58 @@ function onOpen() {
   SpreadsheetApp.getUi().createMenu('Disturbance game')
     .addItem('Limpar "Sem turma" (practice)', 'clearPractice')
     .addItem('Limpar uma turma... (clear a class)', 'clearClassPrompt')
+    .addSeparator()
+    .addItem('Mover "Sem turma" de hoje para um grupo...', 'moveTodayPracticePrompt')
     .addToUi();
+}
+
+/**
+ * Students who played today without picking a group (they landed in "Sem turma") are moved
+ * into a group, created with exactly the name typed if it does not exist yet. Shows the
+ * names and asks before changing anything.
+ */
+function moveTodayPracticePrompt() {
+  const ui = SpreadsheetApp.getUi();
+  const r = ui.prompt('Mover "Sem turma" de hoje', 'Nome do grupo (é criado se não existir):', ui.ButtonSet.OK_CANCEL);
+  if (r.getSelectedButton() !== ui.Button.OK) return;
+  const label = clean(r.getResponseText(), 80);
+  if (label.length < 3) { ui.alert('Nome muito curto.'); return; }
+
+  const tz = Session.getScriptTimeZone();
+  const today = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd');
+  const sh = getSheet();
+  const values = sh.getDataRange().getValues();
+  const col = {};
+  values[0].forEach(function (h, i) { col[h] = i; });
+  const rows = [];
+  const names = [];
+  for (let i = 1; i < values.length; i++) {
+    const v = values[i];
+    const day = v[col.received] instanceof Date ? Utilities.formatDate(v[col.received], tz, 'yyyy-MM-dd') : '';
+    if (String(v[col.group]) === '' && day === today) { rows.push(i + 1); names.push(String(v[col.name])); }
+  }
+  if (!rows.length) { ui.alert('Nenhum resultado em "Sem turma" hoje (' + today + ').'); return; }
+  const ok = ui.alert('Mover ' + rows.length + ' resultado(s) de hoje para "' + label + '"?\n\n' + names.join('\n'),
+    ui.ButtonSet.YES_NO);
+  if (ok !== ui.Button.YES) return;
+
+  const g = findOrCreateGroup_(label);
+  rows.forEach(function (row) { sh.getRange(row, col.group + 1).setValue(g.id); });
+  ui.alert(rows.length + ' resultado(s) movido(s) para "' + g.label + '".\n\nLink do grupo:\n' + GAME_URL + '?class=' +
+    encodeURIComponent(g.id) + '\n\nRanking:\n' + GAME_URL + '?view=class&class=' + encodeURIComponent(g.id));
+}
+
+/** Group with exactly this label (no date added); created if missing. */
+function findOrCreateGroup_(label) {
+  const found = listGroups().filter(function (g) { return g.label === label; })[0];
+  if (found) return found;
+  const tz = Session.getScriptTimeZone();
+  const slug = label.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24);
+  const id = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd') + '-' + (slug || 'grupo') + '-' +
+    Math.random().toString(36).slice(2, 6);
+  getGroupSheet().appendRow([new Date(), id, label]);
+  return { id: id, label: label };
 }
 
 function clearPractice() { clearGroup_(''); }

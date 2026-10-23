@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="game.css?v=7">
+  <link rel="stylesheet" href="game.css?v=8">
 </head>
 <body>
   <header class="top">
@@ -56,7 +56,7 @@
         </div>
         <p class="small" data-i18n="privacy"></p>
       </form>
-      <p class="add-group-wrap"><button type="button" class="linkbtn subtle" id="btn-add-group" data-i18n="addGroup"></button></p>
+      <p class="add-group-wrap small"><span data-i18n="addGroupLead"></span> <button type="button" class="linkbtn subtle" id="btn-add-group" data-i18n="addGroup"></button></p>
       <div id="resume" class="card hidden">
         <p data-i18n="resumeText"></p>
         <div class="row">
@@ -215,6 +215,8 @@
           <div class="table-scroll"><table id="cv-matrix"></table></div>
         </div>
       </div>
+      <!-- instructor shortcut: same colour as the background on purpose -->
+      <p class="hidden-review"><a id="review-link" href="?review=1">Review</a></p>
     </section>
   </main>
 
@@ -264,13 +266,13 @@
   </div>
 
   <footer class="foot small">
-    <span data-i18n="credits"></span>
+    <span data-i18n="credits"></span> <span class="version">v1.0</span>
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="config.js?v=7"></script>
-  <script src="sites_data.js?v=7"></script>
-  <script src="content.js?v=7"></script>
-  <script src="game.js?v=7"></script>
+  <script src="config.js?v=8"></script>
+  <script src="sites_data.js?v=8"></script>
+  <script src="content.js?v=8"></script>
+  <script src="game.js?v=8"></script>
 </body>
 </html>
