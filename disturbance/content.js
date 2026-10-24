@@ -4,7 +4,7 @@
 window.CONTENT = {
   ui: {
     kicker: { en: "Forest disturbance interpretation", pt: "Interpretação de distúrbios florestais" },
-    title: { en: "Forest Disturbance Game", pt: "Jogo dos Distúrbios Florestais" },
+    title: { en: "Forest Disturbance Game with Satellite Images", pt: "Jogo dos Distúrbios Florestais com Imagens de Satélite" },
     intro: {
       en: "30 places around the world, seen from space by the Sentinel-2 satellite of the European Space Agency, before and after something happened - or nothing at all. Compare the images and decide what changed the forest.",
       pt: "30 lugares ao redor do mundo, vistos do espaço pelo satélite Sentinel-2, da Agência Espacial Europeia, antes e depois de algo acontecer - ou de nada acontecer. Compare as imagens e decida o que mudou na floresta.",
