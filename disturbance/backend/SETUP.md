@@ -1,4 +1,4 @@
-# Forest Disturbance Game - backend setup (Google Sheet + Apps Script)
+# Forest Disturbance Game with Satellite Images - backend setup (Google Sheet + Apps Script)
 
 The game (`../index.html`, `../game.js`, ...) is a static page on GitHub Pages. Everything that
 needs a server lives in **one Google Apps Script bound to a Google Sheet** (`Code.gs` here):

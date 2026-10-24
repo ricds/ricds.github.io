@@ -85,7 +85,8 @@ function doPost(e) {
       // a person's name as sender, plain subject, and a text part beside the HTML all lower
       // the spam score; the rest is the recipient marking the sender as safe (see SETUP.md)
       name: 'Ricardo Dalagnol (Forest Disturbance Game)',
-      subject: (lang === 'pt' ? 'Jogo dos Distúrbios Florestais - resultado de ' : 'Forest Disturbance Game - results for ') +
+      subject: (lang === 'pt' ? 'Jogo dos Distúrbios Florestais com Imagens de Satélite - resultado de '
+        : 'Forest Disturbance Game with Satellite Images - results for ') +
         name + ': ' + score + '/' + answers.length,
       body: mail.text,
       htmlBody: mail.html,
@@ -251,7 +252,7 @@ function emailManageLinks_() {
   MailApp.sendEmail({
     to: TEACHER_EMAIL,
     name: 'Ricardo Dalagnol (Forest Disturbance Game)',
-    subject: 'Forest Disturbance Game - manage links for your groups',
+    subject: 'Forest Disturbance Game with Satellite Images - manage links for your groups',
     body: 'Open a link to close or re-open that group on the website. Keep these links private: ' +
       'anyone with a link can close or re-open its group.\n\n' + (lines.join('\n\n') || '(no groups yet)'),
   });
@@ -357,13 +358,13 @@ function getSheet() {
 function emailContent(m) {
   const pt = m.lang === 'pt';
   const L = pt ? {
-    title: 'Jogo dos Distúrbios Florestais', score: 'Pontuação', cls: 'Turma', practice: 'Sem turma (só praticando)',
+    title: 'Jogo dos Distúrbios Florestais com Imagens de Satélite', score: 'Pontuação', cls: 'Turma', practice: 'Sem turma (só praticando)',
     org: 'Organização',
     time: 'Tempo', byType: 'Acertos por tipo de distúrbio', answers: 'Suas respostas', you: 'Sua resposta',
     right: 'Resposta correta', sure: 'tenho certeza', guess: 'chute', play: 'Jogar de novo',
     ranking: 'Ranking da turma', wrong: 'Para revisar', all: 'Todas as respostas',
   } : {
-    title: 'Forest Disturbance Game', score: 'Score', cls: 'Class', practice: 'No class (just practising)',
+    title: 'Forest Disturbance Game with Satellite Images', score: 'Score', cls: 'Class', practice: 'No class (just practising)',
     org: 'Organisation',
     time: 'Time', byType: 'Correct by type of disturbance', answers: 'Your answers', you: 'Your answer',
     right: 'Right answer', sure: 'sure', guess: 'guessing', play: 'Play again',
